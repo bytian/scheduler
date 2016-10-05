@@ -103,7 +103,6 @@ void Simulator::assign(int oid)
 
 void Simulator::addToAssign(int oid)
 {
-    std::cerr << "F3" << std::endl;
     to_assign.push_back(oid);
 }
 

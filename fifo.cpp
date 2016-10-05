@@ -26,17 +26,18 @@ void FIFO::init()
 
 bool FIFO::acquire(int tid, int oid, bool excl)
 {
-    std::cerr << "acquire" << tid << ' ' << oid << ' ' << excl << std::endl;
+//    std::cerr << "acquire" << tid << ' ' << oid << ' ' << excl << std::endl;
     int status = sim->getObj(oid).getStatus();
-    std::cerr << "empty " << oid << ' '<< sim->getObj(oid).getOwner().empty() << '\t';
-    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
-        std::cerr << *itr << ' ';
-    std::cerr << std::endl;
+//    std::cerr << "empty " << oid << ' '<< sim->getObj(oid).getOwner().empty() << '\t';
+//    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
+//        std::cerr << *itr << ' ';
+//    std::cerr << std::endl;
     
-    std::cerr << "status" << status << std::endl;
+//    std::cerr << "status" << status << std::endl;
     if (status == Object::FREE)
     {
-        std::cerr << "G1" << std::endl;
+//        std::cerr << "G1" << std::endl;
+//        std::cerr << "sizes: " << exclTrans.size() << ' ' << inclTrans.size() << std::endl;
         std::set<int> trans;
         trans.insert(tid);
         sim->getObj(oid).addOwner(trans, excl);
@@ -60,23 +61,24 @@ bool FIFO::acquire(int tid, int oid, bool excl)
 
 void FIFO::release(int tid, int oid)
 {
-    std::cerr << "F2 " << tid << ' ' << oid << std::endl;
+//    std::cerr << "F2 " << tid << ' ' << oid << std::endl;
     sim->getObj(oid).releaseBy(tid);
-    std::cerr << "F22" <<std::endl;
+//    std::cerr << "F22" <<std::endl;
     if (sim->getObj(oid).getStatus() == Object::FREE)
     {
-        std::cerr << "F23" << std::endl;
-        if (!exclTrans.empty() && !inclTrans.empty())
+//        std::cerr << "F23" << std::endl;
+        if (!exclTrans[oid].empty() && !inclTrans[oid].empty())
         {
             std::cerr << "F24" << std::endl;
             sim->addToAssign(oid);
         }
     }
-    std::cerr << "F25" << std::endl;
+//    std::cerr << "F25" << std::endl;
 }
 
 const std::set<int> FIFO::assign(int oid)
 {
+//    std::cerr << "\tassigning object " << oid << std::endl;
     std::set<int> assigned;
 
     if (inclTime[oid] < 0 || inclTime[oid] > exclTime[oid].front())
