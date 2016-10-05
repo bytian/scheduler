@@ -1,8 +1,8 @@
 #include "fifo.h"
 #include "scheduler.h"
 #include "object.h"
-#include "transaction.h"
 #include "simulator.h"
+#include "transaction.h"
 
 #include <vector>
 #include <deque>
@@ -12,7 +12,7 @@
 
 FIFO::FIFO() : Scheduler() {}
 
-FIFO::FIFO(Simulator* sim) : sim(sim) {}
+FIFO::FIFO(Simulator* sim) : Scheduler(sim) {}
 
 void FIFO::init()
 {
@@ -84,9 +84,5 @@ const std::set<int> FIFO::assign(int oid)
     return assigned;
 }
 
-int FIFO::getTime()
-{
-    return sim->getTime();
-}
-
+int FIFO::getTime() { return sim->getTime(); }
 
