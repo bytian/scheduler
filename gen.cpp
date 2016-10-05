@@ -1,0 +1,61 @@
+#include <iostream>
+#include <random>
+#include <cstdlib>
+#include <vector>
+#include "action.h"
+using namespace std;
+
+const int NUMLOCK = 100;
+const int NUMTRAN = 20000;
+const int NEWT = 5;
+const int NEWA = 3;
+const double FINPROB = 0.3;
+
+default_random_engine genT;
+poisson_distribution<int> poiT;
+default_random_engine genA;
+poisson_distribution<int> poiA;
+
+vector<Action> genTrans()
+{
+    int time = 0;
+    vector<Action> act;
+    act.push_back(Action(time, Action::START, true));
+    while (true)
+    {
+        int dtime = 1 + poiA(genA);
+        
+        double r = rand() / (double) RAND_MAX;
+        if (r < 0.4) // finish
+        {
+            act.push_back(Action(time += dtime, Action::FINISH, true));
+            break;
+        }
+        else // acquire a lock (for now assume all locks are EXCLUSIVE)
+        {
+            int lock = rand() % NUMLOCK; // each lock has equal probability to be acquired
+            act.push_back(Action(time += dtime, lock, true));
+        }
+    }
+
+    return act;
+}
+
+int main()
+{
+    cout << NUMLOCK << ' ' << NUMTRAN << endl;
+
+    int startTime = 0;
+    for (int i = 0; i < NUMTRAN; ++i)
+    {
+        vector<Action> acts = genTrans();
+        cout << startTime << ' ' << acts.size() << endl;
+        for (int j = 0; j < acts.size(); ++j)
+        {
+            cout << acts[j].time << ' ' << acts[j].lock << ' ' << acts[j].exclusive << endl;
+        }
+        startTime += poiT(genT);
+    }
+    return 0;
+}
+
