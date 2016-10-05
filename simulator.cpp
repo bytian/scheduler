@@ -56,7 +56,7 @@ void Simulator::run()
 {
     while (true)
     {
-        if (clock % 100 == 0) std::cerr << clock << std::endl;
+        if (clock % 100 == 0)  { std::cerr << clock << '\t' << to_assign.size() << std::endl; }
 
         getNew();
 
@@ -99,6 +99,12 @@ void Simulator::assign(int oid)
     {
         running.insert(*itr);
     }
+}
+
+void Simulator::addToAssign(int oid)
+{
+    std::cerr << "F3" << std::endl;
+    to_assign.push_back(oid);
 }
 
 void Simulator::proceed()

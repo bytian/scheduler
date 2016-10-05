@@ -1,5 +1,6 @@
 #include "object.h"
 
+#include <iostream>
 #include <set>
 
 int Object::getStatus() const

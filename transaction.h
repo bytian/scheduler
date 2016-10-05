@@ -92,5 +92,7 @@ public:
      * actually running
      ********************************************/
     int getRunTime() { return curTime; }
+
+    int getID() { return id; }
 };
 #endif

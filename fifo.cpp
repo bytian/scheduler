@@ -12,10 +12,12 @@
 
 FIFO::FIFO() : Scheduler() {}
 
-FIFO::FIFO(Simulator* sim) : Scheduler(sim) {}
+FIFO::FIFO(Simulator* sim) : sim(sim) {}
 
 void FIFO::init()
 {
+    std::cerr << sim << std::endl;
+    std::cerr << sim->getTotalObj() << std::endl;
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
     exclTime.resize(sim->getTotalObj());
@@ -24,9 +26,17 @@ void FIFO::init()
 
 bool FIFO::acquire(int tid, int oid, bool excl)
 {
+    std::cerr << "acquire" << tid << ' ' << oid << ' ' << excl << std::endl;
     int status = sim->getObj(oid).getStatus();
+    std::cerr << "empty " << oid << ' '<< sim->getObj(oid).getOwner().empty() << '\t';
+    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
+        std::cerr << *itr << ' ';
+    std::cerr << std::endl;
+    
+    std::cerr << "status" << status << std::endl;
     if (status == Object::FREE)
     {
+        std::cerr << "G1" << std::endl;
         std::set<int> trans;
         trans.insert(tid);
         sim->getObj(oid).addOwner(trans, excl);
@@ -50,7 +60,19 @@ bool FIFO::acquire(int tid, int oid, bool excl)
 
 void FIFO::release(int tid, int oid)
 {
+    std::cerr << "F2 " << tid << ' ' << oid << std::endl;
     sim->getObj(oid).releaseBy(tid);
+    std::cerr << "F22" <<std::endl;
+    if (sim->getObj(oid).getStatus() == Object::FREE)
+    {
+        std::cerr << "F23" << std::endl;
+        if (!exclTrans.empty() && !inclTrans.empty())
+        {
+            std::cerr << "F24" << std::endl;
+            sim->addToAssign(oid);
+        }
+    }
+    std::cerr << "F25" << std::endl;
 }
 
 const std::set<int> FIFO::assign(int oid)

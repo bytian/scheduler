@@ -74,6 +74,15 @@ public:
      * Simulate the running of the transactions
      ******************************************/
     void run();
+    
+    /******************************************
+     * Add objects that are just released and
+     * that is blocking some transactions to
+     * the set to_assign
+     ******************************************/
+    void addToAssign(int oid);
+
+
 
     /******************************************
      * Get the information of a transactions

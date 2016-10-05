@@ -14,7 +14,6 @@ static const double DynamPro::ALPHA = 3;
 
 DynamPro::DynamPro() : Scheduler() {}
 
-// TODO
 void DynamPro::init()
 {
     exclTrans.resize(sim->getTotalObj());

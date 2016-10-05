@@ -9,6 +9,7 @@ int main()
 {
     Simulator sim;
 
+    cerr << "begin" <<endl;
     sim.inputTrans();
 
     cerr << "input" << endl;

@@ -12,6 +12,11 @@ int Transaction::proceed()
     {
         case Action::FINISH :
             endTime = sch->getTime();
+            std::cerr << "F1" << ' ' << id << ' ' << holds.size() << std::endl;
+            for (auto itr = holds.begin(); itr != holds.end(); ++itr)
+            {
+                sch->release(id, *itr);
+            }
             return FINISH;
         case Action::START :
             ++cursor;
@@ -20,12 +25,14 @@ int Transaction::proceed()
             if (sch->acquire(id, acts[cursor].lock, acts[cursor].excl))
             {
                 holds.push_back(acts[cursor].lock);
+                ++cursor;
 
                 return RUNNING;
             }
             else
             {
                 blockBy = acts[cursor].lock;
+                ++cursor;
                 return BLOCKED;
             }
     }
