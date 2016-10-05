@@ -6,13 +6,13 @@
 #include <set>
 
 #include "object.h"
-#include "transaction.h"
 #include "scheduler.h"
+#include "transaction.h"
 #include "simulator.h"
 
 class Simulator;
 
-class FIFO : virtual Scheduler
+class FIFO : Scheduler
 {
 private:
     std::vector<std::deque<int> > exclTrans;

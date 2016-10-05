@@ -12,9 +12,8 @@
 
 #define SIM_SCHEDULER FIFO 
 
-class SIM_SCHEDULER;
-class Object;
 class Transaction;
+class SIM_SCHEDULER;
 
 class Simulator
 {

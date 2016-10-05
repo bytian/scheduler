@@ -1,4 +1,5 @@
 #include "simulator.h"
+#include "transaction.h"
 #include "scheduler.h"
 #include "fifo.h"
 #include <iostream>

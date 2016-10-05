@@ -3,8 +3,6 @@
 
 #include <set>
 
-#include "scheduler.h"
-
 class Object
 {
 public:

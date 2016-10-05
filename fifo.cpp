@@ -1,4 +1,5 @@
 #include "fifo.h"
+#include "scheduler.h"
 
 #include <vector>
 #include <deque>

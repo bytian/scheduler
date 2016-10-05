@@ -60,4 +60,8 @@ public:
     virtual int getTime(); 
 };
 
+Scheduler::Scheduler() : sim(NULL) {}
+
+Scheduler::Scheduler(Simulator* sim) : sim(sim) {}
+
 #endif
