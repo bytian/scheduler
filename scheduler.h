@@ -34,7 +34,7 @@ public:
      * @ReturnValue
      * true : if the transaction is granted the lock
      **************************************************/
-    virtual bool acquire(int tid, int oid, bool excl);
+    virtual bool acquire(int tid, int oid, bool excl) = 0;
     
     /**************************************************
      * Called when transaction tid releases the lock no
@@ -43,7 +43,7 @@ public:
      * tid : the id of the transaction
      * oid : the id of the object
      **************************************************/
-    virtual void release(int tid, int oid);
+    virtual void release(int tid, int oid) = 0;
 
     /**************************************************
      * Called by the simulator at the beginning of a 
@@ -52,16 +52,12 @@ public:
      * @Parameters
      * oid : the id of the object
      **************************************************/
-    virtual const std::set<int> assign(int oid);
+    virtual const std::set<int> assign(int oid) = 0;
 
     /**************************************************
      * Return current system time
      **************************************************/
-    virtual int getTime(); 
+    virtual int getTime() = 0; 
 };
-
-Scheduler::Scheduler() : sim(NULL) {}
-
-Scheduler::Scheduler(Simulator* sim) : sim(sim) {}
 
 #endif
