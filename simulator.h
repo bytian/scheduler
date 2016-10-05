@@ -9,6 +9,7 @@
 
 
 class Action;
+class Transaction;
 
 class Simulator
 {
