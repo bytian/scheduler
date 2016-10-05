@@ -10,6 +10,8 @@ int main()
     Simulator sim;
 
     sim.inputTrans();
+
+    cerr << "input" << endl;
     sim.run();
 
     int tot = 0;
@@ -17,6 +19,7 @@ int main()
     {
         tot += sim.getTrans(i).latency();
     }
+    cerr << "run" << endl;
     cout << "average latency:" << tot / (double) sim.getTotalTrans() << endl;
 
     return 0;

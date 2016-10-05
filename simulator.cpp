@@ -4,6 +4,7 @@
 #include "scheduler.h"
 #include "action.h"
 #include "fifo.h"
+#include "iostream"
 
 #include <set>
 #include <vector>
@@ -26,16 +27,20 @@ void Simulator::inputTrans()
     int n, m;
     std::cin >> n >> m;
 
-    for (int i = 0; i < m; ++i)
+    std::cerr << n << m << std::endl;
+
+    for (int i = 0; i < n; ++i)
     {
         obj.push_back(Object(i));
     }
 
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < m; ++i)
     {
-        int startTime, k;
-        std::cin >> startTime >> k;
-        std::vector<Action> acts(k);
+        if (i % 100 == 0) std::cerr << i << std::endl;
+
+        int k;
+        std::cin >> k;
+        std::vector<Action> acts;
 
         for (int j = 0; j < k; ++j)
         {
@@ -43,17 +48,23 @@ void Simulator::inputTrans()
             bool excl;
             std::cin >> time >> act >> excl;
             acts.push_back(Action(time, act, excl));
+            // std::cerr << time << ' ' << act << ' ' << excl << std::endl;
         }
 
-        trans.push_back(Transaction(i, startTime, acts, sch));
+        trans.push_back(Transaction(i, acts[0].time, acts, sch));
+        // std::cerr << '\t' << acts[0].time << std::endl;
     }
 }
 
 void Simulator::run()
 {
-    while (cursor < trans.size())
+    while (true)
     {
+        if (clock % 100 == 0 || true) std::cerr << clock << std::endl;
+
         getNew();
+
+        std::cerr << "\tgetnew" << std::endl;
         
         for (auto itr = to_assign.begin(); itr != to_assign.end(); ++itr)
         {
@@ -61,18 +72,28 @@ void Simulator::run()
         }
         to_assign.clear();
 
+        std::cerr << "\tassign" << std::endl;
+
         proceed();
 
+        std::cerr << "\tproceed" << std::endl;
+
         ++clock;
+
+        if (cursor >= trans.size() && to_assign.empty() && running.empty())
+            break;
+        std::cerr << "\t" << cursor << std::endl;
     }
 }
 
 void Simulator::getNew()
 {
-    while (clock >= trans[cursor].getStartTime())
+    while (cursor < trans.size() && clock >= trans[cursor].getStartTime())
     {
+        // std::cerr << "\t\tT" << cursor << " " << trans[cursor].getStartTime() << std::endl;
         running.insert(cursor++);
     }
+    // std::cerr << cursor << ' ' << trans[cursor].getStartTime() << std::endl;
 }
 
 void Simulator::assign(int oid)
@@ -86,15 +107,24 @@ void Simulator::assign(int oid)
 
 void Simulator::proceed()
 {
-    for (auto itr = running.begin(); itr != running.end(); )
+    std::vector<int> removed;
+
+    for (auto itr = running.begin(); itr != running.end(); ++itr)
     {
+        std::cerr << "\t\t" << *itr << std::endl;
+
         int result = trans[*itr].proceed();
         if (result == Transaction::BLOCKED || result == Transaction::FINISH)
         {
-            itr = running.erase(itr);
+            removed.push_back(*itr);
         }
-        else
-            ++itr;
+
+        std::cerr << "\t\t" << *itr << "a" << std::endl;
+    }
+
+    for (int i = 0; i < removed.size(); ++i)
+    {
+        running.erase(removed[i]);
     }
 }
 

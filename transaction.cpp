@@ -1,12 +1,13 @@
 #include "transaction.h"
 #include "action.h"
 #include "scheduler.h"
+#include <iostream>
 
 int Transaction::proceed()
 {
     if (curTime++ < acts[cursor].time)
         return RUNNING;
-    
+
     switch (acts[cursor].lock)
     {
         case Action::FINISH :
@@ -19,6 +20,7 @@ int Transaction::proceed()
             if (sch->acquire(id, acts[cursor].lock, acts[cursor].excl))
             {
                 holds.push_back(acts[cursor].lock);
+
                 return RUNNING;
             }
             else
