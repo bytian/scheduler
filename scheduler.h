@@ -1,10 +1,10 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
-#include "simulator.h"
-
 #include <cstdlib>
 #include <set>
+
+//#include "simulator.h"
 
 class Simulator;
 

@@ -5,8 +5,6 @@
 #include "action.h"
 #include "scheduler.h"
 
-class Scheduler;
-
 class Transaction
 {
 public:

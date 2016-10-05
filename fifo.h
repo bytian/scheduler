@@ -5,14 +5,14 @@
 #include <deque>
 #include <set>
 
-#include "object.h"
+//#include "object.h"
+//#include "transaction.h"
 #include "scheduler.h"
-#include "transaction.h"
-#include "simulator.h"
+//#include "simulator.h"
 
 class Simulator;
 
-class FIFO : Scheduler
+class FIFO : public Scheduler
 {
 private:
     std::vector<std::deque<int> > exclTrans;
@@ -21,6 +21,7 @@ private:
     std::vector<int> inclTime;
     Simulator* sim;
 public:
+    FIFO();
     FIFO(Simulator* sim);
     bool acquire(int tid, int oid, bool excl);
     void release(int tid, int oid);

@@ -1,11 +1,17 @@
 #include "fifo.h"
 #include "scheduler.h"
+#include "object.h"
+#include "transaction.h"
+#include "simulator.h"
 
 #include <vector>
 #include <deque>
 #include <set>
+#include <cstdlib>
 
-FIFO::FIFO(Simulator* sim) : sim(sim)
+FIFO::FIFO() : Scheduler() {}
+
+FIFO::FIFO(Simulator* sim) : Scheduler(sim)
 {
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());

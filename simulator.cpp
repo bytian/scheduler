@@ -9,6 +9,8 @@
 #include <vector>
 #include <iostream>
 
+#define SIM_SCHEDULER FIFO
+
 Simulator::Simulator()
 {
     sch = new SIM_SCHEDULER(this);
@@ -43,7 +45,7 @@ void Simulator::inputTrans()
             acts.push_back(Action(time, act, excl));
         }
 
-        trans.push_back(Transaction(i, startTime, acts, (Scheduler*) sch));
+        trans.push_back(Transaction(i, startTime, acts, sch));
     }
 }
 
@@ -96,4 +98,14 @@ void Simulator::proceed()
     }
 }
 
+Transaction& Simulator::getTrans(int tid)
+{
+    return trans[tid];
+}
 
+Object& Simulator::getObj(int oid)
+{
+    return obj[oid];
+}
+
+#undef SIM_SCHEDULER

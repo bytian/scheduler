@@ -1,19 +1,14 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
+#include "object.h"
+#include "scheduler.h"
+
 #include <set>
 #include <vector>
 
-#include "object.h"
-#include "transaction.h"
-#include "scheduler.h"
-#include "action.h"
-#include "fifo.h"
 
-#define SIM_SCHEDULER FIFO 
-
-class Transaction;
-class SIM_SCHEDULER;
+class Action;
 
 class Simulator
 {
@@ -22,7 +17,7 @@ private:
     int clock = 0;
 
     // the chosen scheduler
-    SIM_SCHEDULER* sch;
+    Scheduler* sch;
 
     // transactions
     std::vector<Transaction> trans;
@@ -86,8 +81,7 @@ public:
      * @ReturnValue
      * the transaction
      ******************************************/
-    Transaction& getTrans(int tid)
-    { return trans.at(tid); }
+    Transaction& getTrans(int tid);
 
     /******************************************
      * Get the information of an object
@@ -96,8 +90,7 @@ public:
      * @ReturnValue
      * the object
      ******************************************/
-    Object& getObj(int oid) 
-    { return obj.at(oid); }
+    Object& getObj(int oid);
 
     /******************************************
      * Return the number of transactions in all
