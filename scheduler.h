@@ -4,7 +4,6 @@
 #include "simulator.h"
 
 #include <cstdlib>
-
 #include <set>
 
 class Simulator;
@@ -17,12 +16,12 @@ public:
     /**************************************************
      * Default constructor
      **************************************************/
-    Scheduler() : sim(NULL) {}
+    Scheduler();
 
     /**************************************************
      * Constructor
      **************************************************/
-    Scheduler(Simulator* sim) : sim(sim) {}
+    Scheduler(Simulator* sim);
 
     /**************************************************
      * Called when transaction tid acquires a lock on
@@ -53,7 +52,7 @@ public:
      * @Parameters
      * oid : the id of the object
      **************************************************/
-    virtual const std::set<int>& assign(int oid);
+    virtual const std::set<int> assign(int oid);
 
     /**************************************************
      * Return current system time

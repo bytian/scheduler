@@ -7,32 +7,43 @@
 
 #include <set>
 #include <vector>
+#include <iostream>
+
+Simulator::Simulator()
+{
+    sch = new SIM_SCHEDULER(this);
+}
+
+Simulator::~Simulator()
+{
+    delete sch;
+}
 
 void Simulator::inputTrans()
 {
     int n, m;
-    cin >> n >> m;
+    std::cin >> n >> m;
 
     for (int i = 0; i < m; ++i)
     {
-        obj.std::push_back(Object(i));
+        obj.push_back(Object(i));
     }
 
     for (int i = 0; i < n; ++i)
     {
         int startTime, k;
-        cin >> startTime >> k;
+        std::cin >> startTime >> k;
         std::vector<Action> acts(k);
 
         for (int j = 0; j < k; ++j)
         {
             int time, act;
             bool excl;
-            cin >> time >> act >> excl;
-            acts.std::push_back(Action(time, act, excl);
+            std::cin >> time >> act >> excl;
+            acts.push_back(Action(time, act, excl));
         }
 
-        trans.std::push_back(Transaction(i, startTime, acts, &sch));
+        trans.push_back(Transaction(i, startTime, acts, (Scheduler*) sch));
     }
 }
 
@@ -58,13 +69,13 @@ void Simulator::getNew()
 {
     while (clock >= trans[cursor].getStartTime())
     {
-        running.std::insert(cursor++);
+        running.insert(cursor++);
     }
 }
 
 void Simulator::assign(int oid)
 {
-    auto assigned = sch.assign(oid);
+    auto assigned = sch->assign(oid);
     for (auto itr = assigned.begin(); itr != assigned.end(); ++itr)
     {
         running.insert(*itr);

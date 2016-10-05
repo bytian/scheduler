@@ -1,4 +1,5 @@
 #include "simulator.h"
+#include "scheduler.h"
 #include "fifo.h"
 #include <iostream>
 using namespace std;

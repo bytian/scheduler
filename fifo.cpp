@@ -9,6 +9,7 @@ FIFO::FIFO(Simulator* sim) : sim(sim)
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
     exclTime.resize(sim->getTotalObj());
+    inclTime.resize(sim->getTotalObj(), -1);
 }
 
 bool FIFO::acquire(int tid, int oid, bool excl)
@@ -24,14 +25,14 @@ bool FIFO::acquire(int tid, int oid, bool excl)
 
     if (excl)
     {
-        exclTrans[oid].std::push_back(tid);
-        exclTime[oid].std::push_back(sim->getTime());
+        exclTrans[oid].push_back(tid);
+        exclTime[oid].push_back(sim->getTime());
     }
     else
     {
-        incluTrans[oid].insert(tid);
-        if (inclTime < 0)
-            inclTime = sim->getTime();
+        inclTrans[oid].insert(tid);
+        if (inclTime[oid] < 0)
+            inclTime[oid] = sim->getTime();
     }
 
     return false;
@@ -42,11 +43,11 @@ void FIFO::release(int tid, int oid)
     sim->getObj(oid).releaseBy(tid);
 }
 
-void const std::set<int>& assign(int oid)
+const std::set<int> FIFO::assign(int oid)
 {
-    std::set<int>& assigned;
+    std::set<int> assigned;
 
-    if (inclTime < 0 || inclTime > exclTime.front())
+    if (inclTime[oid] < 0 || inclTime[oid] > exclTime[oid].front())
     {
         int trans = exclTrans[oid].front();
         sim->getTrans(trans).grantLock();
@@ -60,13 +61,13 @@ void const std::set<int>& assign(int oid)
     else
     {
         assigned = inclTrans[oid];
-        for (auto itr = assigned.begin(); itr != end(); ++itr)
+        for (auto itr = assigned.begin(); itr != assigned.end(); ++itr)
         {
             sim->getTrans(*itr).grantLock();
         }
 
-        inclTime = -1;
-        incluTrans[oid].clear();
+        inclTime[oid] = -1;
+        inclTrans[oid].clear();
 
         sim->getObj(oid).addOwner(assigned, false);
     }

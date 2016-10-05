@@ -14,6 +14,7 @@
 
 class SIM_SCHEDULER;
 class Object;
+class Transaction;
 
 class Simulator
 {
@@ -22,7 +23,7 @@ private:
     int clock = 0;
 
     // the chosen scheduler
-    SIM_SCHEDULER sch(SIM_SCHEDULER* psch);
+    SIM_SCHEDULER* sch;
 
     // transactions
     std::vector<Transaction> trans;
@@ -59,6 +60,16 @@ private:
     void proceed();
 public:
     /******************************************
+     * Constructor
+     ******************************************/
+    Simulator();
+
+    /******************************************
+     * Destructor
+     ******************************************/
+    ~Simulator();
+
+    /******************************************
      * Get information of the transactions and 
      * objects from standard input
      ******************************************/
@@ -76,8 +87,8 @@ public:
      * @ReturnValue
      * the transaction
      ******************************************/
-    const Transaction& getTrans(int tid)
-    { return trans[tid]; }
+    Transaction& getTrans(int tid)
+    { return trans.at(tid); }
 
     /******************************************
      * Get the information of an object
@@ -86,22 +97,22 @@ public:
      * @ReturnValue
      * the object
      ******************************************/
-    const Object& getObj(int oid)
-    { return obj[oid]; }
+    Object& getObj(int oid) 
+    { return obj.at(oid); }
 
     /******************************************
      * Return the number of transactions in all
      ******************************************/
-    int getTotalTrans() { return trans.size(); }
+    int getTotalTrans() const { return trans.size(); }
 
     /******************************************
      * Return the number of objects in all
      ******************************************/
-    int getTotalObj() { return obj.size(); }
+    int getTotalObj() const { return obj.size(); }
 
     /******************************************
      * Return current time
      ******************************************/
-    int getTime() { return clock; }
+    int getTime() const { return clock; }
 };
 #endif

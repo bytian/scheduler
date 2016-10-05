@@ -10,21 +10,22 @@
 #include "scheduler.h"
 #include "simulator.h"
 
-class Scheduler;
+class Simulator;
 
-class FIFO : Scheduler
+class FIFO : virtual Scheduler
 {
 private:
     std::vector<std::deque<int> > exclTrans;
     std::vector<std::set<int> > inclTrans;
     std::vector<std::deque<int> > exclTime;
-    int inclTime = -1;
+    std::vector<int> inclTime;
     Simulator* sim;
 public:
     FIFO(Simulator* sim);
     bool acquire(int tid, int oid, bool excl);
     void release(int tid, int oid);
-    const std::set<int>& assign(int oid);
+    const std::set<int> assign(int oid);
     int getTime();
 };
+
 #endif
