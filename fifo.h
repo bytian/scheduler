@@ -23,6 +23,7 @@ private:
 public:
     FIFO();
     FIFO(Simulator* sim);
+    void init();
     bool acquire(int tid, int oid, bool excl);
     void release(int tid, int oid);
     const std::set<int> assign(int oid);

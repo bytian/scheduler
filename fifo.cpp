@@ -12,7 +12,9 @@
 
 FIFO::FIFO() : Scheduler() {}
 
-FIFO::FIFO(Simulator* sim) : sim(sim)
+FIFO::FIFO(Simulator* sim) : sim(sim) {}
+
+void FIFO::init()
 {
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
@@ -22,16 +24,12 @@ FIFO::FIFO(Simulator* sim) : sim(sim)
 
 bool FIFO::acquire(int tid, int oid, bool excl)
 {
-    std::cerr << "\t\t\t-1" << '\t' << oid  << '\t' << sim->getTotalObj() << std::endl;
     int status = sim->getObj(oid).getStatus();
-    std::cerr << "\t\t\t000" << std::endl;
     if (status == Object::FREE)
     {
         std::set<int> trans;
         trans.insert(tid);
-        std::cerr << "\t\t\t1" << std::endl;
         sim->getObj(oid).addOwner(trans, excl);
-        std::cerr << "\t\t\t2" << std::endl;
         return true;
     }
 

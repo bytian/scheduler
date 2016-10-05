@@ -27,8 +27,6 @@ void Simulator::inputTrans()
     int n, m;
     std::cin >> n >> m;
 
-    std::cerr << n << m << std::endl;
-
     for (int i = 0; i < n; ++i)
     {
         obj.push_back(Object(i));
@@ -36,8 +34,6 @@ void Simulator::inputTrans()
 
     for (int i = 0; i < m; ++i)
     {
-        if (i % 100 == 0) std::cerr << i << std::endl;
-
         int k;
         std::cin >> k;
         std::vector<Action> acts;
@@ -48,23 +44,23 @@ void Simulator::inputTrans()
             bool excl;
             std::cin >> time >> act >> excl;
             acts.push_back(Action(time, act, excl));
-            // std::cerr << time << ' ' << act << ' ' << excl << std::endl;
         }
 
         trans.push_back(Transaction(i, acts[0].time, acts, sch));
-        // std::cerr << '\t' << acts[0].time << std::endl;
     }
+
+    sch->init();
 }
 
 void Simulator::run()
 {
     while (true)
     {
-        if (clock % 100 == 0 || true) std::cerr << clock << std::endl;
+        if (clock % 100 == 0) std::cerr << clock << std::endl;
 
         getNew();
 
-        std::cerr << "\tgetnew" << std::endl;
+        // std::cerr << "\tgetnew" << std::endl;
         
         for (auto itr = to_assign.begin(); itr != to_assign.end(); ++itr)
         {
@@ -72,17 +68,17 @@ void Simulator::run()
         }
         to_assign.clear();
 
-        std::cerr << "\tassign" << std::endl;
+        // std::cerr << "\tassign" << std::endl;
 
         proceed();
 
-        std::cerr << "\tproceed" << std::endl;
+        // std::cerr << "\tproceed" << std::endl;
 
         ++clock;
 
         if (cursor >= trans.size() && to_assign.empty() && running.empty())
             break;
-        std::cerr << "\t" << cursor << std::endl;
+        // std::cerr << "\t" << cursor << std::endl;
     }
 }
 
@@ -111,15 +107,11 @@ void Simulator::proceed()
 
     for (auto itr = running.begin(); itr != running.end(); ++itr)
     {
-        std::cerr << "\t\t" << *itr << std::endl;
-
         int result = trans[*itr].proceed();
         if (result == Transaction::BLOCKED || result == Transaction::FINISH)
         {
             removed.push_back(*itr);
         }
-
-        std::cerr << "\t\t" << *itr << "a" << std::endl;
     }
 
     for (int i = 0; i < removed.size(); ++i)

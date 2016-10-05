@@ -8,4 +8,4 @@ run: scheduler.cpp fifo.cpp transaction.cpp simulator.cpp run.cpp object.cpp
 	$(CXX) -o $@ $^
 
 clean:
-	rm -f scheduler gen
+	rm -f run gen

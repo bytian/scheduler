@@ -24,6 +24,13 @@ public:
     Scheduler(Simulator* sim);
 
     /**************************************************
+     * Initializer
+     * Called when simulator reads in information of
+     * transactions and objects
+     **************************************************/
+    virtual void init() = 0;
+
+    /**************************************************
      * Called when transaction tid acquires a lock on
      * object oid.
      * @Parameters
