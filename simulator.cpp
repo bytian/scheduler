@@ -4,14 +4,15 @@
 #include "scheduler.h"
 #include "action.h"
 // #include "fifo.h"
-#include "oldestFirst.h"
+// #include "oldestFirst.h"
+#include "randomScheduler.h"
 #include "iostream"
 
 #include <set>
 #include <vector>
 #include <iostream>
 
-#define SIM_SCHEDULER OldestFirst
+#define SIM_SCHEDULER RandomScheduler
 
 Simulator::Simulator()
 {

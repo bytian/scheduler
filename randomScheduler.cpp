@@ -2,7 +2,7 @@
 // Created by Jamie Wu on 10/5/16.
 //
 
-#include "randomSchedule.h"
+#include "randomScheduler.h"
 #include "scheduler.h"
 #include "object.h"
 #include "simulator.h"
@@ -13,7 +13,7 @@
 
 RandomScheduler::RandomScheduler() : Scheduler() {}
 
-RandomScheduler::RandomScheduler(Simulator* sim) : Scheduler(sim) {}
+RandomScheduler::RandomScheduler(Simulator* sim) : sim(sim) {}
 
 void RandomScheduler::init() {
     exclTrans.resize(sim->getTotalObj());
@@ -43,6 +43,14 @@ bool RandomScheduler::acquire(int tid, int oid, bool excl)
 void RandomScheduler::release(int tid, int oid)
 {
     sim->getObj(oid).releaseBy(tid);
+
+    if (sim->getObj(oid).getStatus() == Object::FREE)
+    {
+        if (!exclTrans[oid].empty() || !inclTrans[oid].empty())
+        {
+            sim->addToAssign(oid);
+        }
+    }
 }
 
 const std::set<int> RandomScheduler::assign(int oid)
@@ -51,7 +59,7 @@ const std::set<int> RandomScheduler::assign(int oid)
 
     double r = ((double) rand() / (RAND_MAX));
 
-    if(r < 0.5){ // assign read lock
+    if((r < 0.5 && !inclTrans[oid].empty()) || exclTrans[oid].empty()){ // assign read lock
         assigned = inclTrans[oid];
         for (auto itr = assigned.begin(); itr != assigned.end(); ++itr) {
             sim->getTrans(*itr).grantLock();
@@ -65,7 +73,7 @@ const std::set<int> RandomScheduler::assign(int oid)
         sim->getTrans(trans).grantLock();
 
         assigned.insert(trans);
-        exclTrans[oid].erase(exclTrans[oid].begin() + 3);
+        exclTrans[oid].erase(exclTrans[oid].begin() + which_write);
 
         sim->getObj(oid).addOwner(assigned, true);
     }
