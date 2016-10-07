@@ -25,15 +25,15 @@ struct Comparater { // customized comparater for the priority queue
     }
 };
 
-class OldestFirstScheduler : public Scheduler {
+class OldestFirst : public Scheduler {
 private:
     std::vector< std::priority_queue< Transaction*, std::vector<Transaction*>, Comparater> > exclTrans;
     std::vector<std::set<int> > inclTrans;
     std::vector<int> minInclStartTime;
     Simulator* sim;
 public:
-    OldestFirstScheduler();
-    OldestFirstScheduler(Simulator* sim);
+    OldestFirst();
+    OldestFirst(Simulator* sim);
     void init();
     bool acquire(int tid, int oid, bool excl);
     void release(int tid, int oid);

@@ -1,7 +1,6 @@
 #include "scheduler.h"
 #include "simulator.h"
 #include "transaction.h"
-#include "fifo.h"
 #include <iostream>
 using namespace std;
 

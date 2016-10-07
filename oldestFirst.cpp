@@ -2,17 +2,17 @@
 // Created by Jamie Wu on 10/5/16.
 //
 
-#include "OldestFirst.h"
+#include "oldestFirst.h"
 #include "object.h"
 #include "simulator.h"
 #include "transaction.h"
 
 
-OldestFirstScheduler::OldestFirstScheduler() : Scheduler() {}
+OldestFirst::OldestFirst() : Scheduler() {}
 
-OldestFirstScheduler::OldestFirstScheduler(Simulator* sim) : Scheduler(sim) {}
+OldestFirst::OldestFirst(Simulator* sim) : sim(sim) {}
 
-void OldestFirstScheduler::init()
+void OldestFirst::init()
 {
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
@@ -20,7 +20,7 @@ void OldestFirstScheduler::init()
     minInclStartTime.resize(sim->getTotalObj(), -1);
 }
 
-bool OldestFirstScheduler::acquire(int tid, int oid, bool excl)
+bool OldestFirst::acquire(int tid, int oid, bool excl)
 {
     int status = sim->getObj(oid).getStatus();
     if (status == Object::FREE) {
@@ -46,12 +46,19 @@ bool OldestFirstScheduler::acquire(int tid, int oid, bool excl)
     return false;
 }
 
-void OldestFirstScheduler::release(int tid, int oid)
+void OldestFirst::release(int tid, int oid)
 {
     sim->getObj(oid).releaseBy(tid);
+    if (sim->getObj(oid).getStatus() == Object::FREE)
+    {
+        if (!exclTrans[oid].empty() || !inclTrans[oid].empty())
+        {
+            sim->addToAssign(oid);
+        }
+    }
 }
 
-const std::set<int> OldestFirstScheduler::assign(int oid)
+const std::set<int> OldestFirst::assign(int oid)
 {
     std::set<int> assigned;
 
@@ -80,4 +87,4 @@ const std::set<int> OldestFirstScheduler::assign(int oid)
     return assigned;
 }
 
-int OldestFirstScheduler::getTime() { return sim->getTime(); }
+int OldestFirst::getTime() { return sim->getTime(); }
