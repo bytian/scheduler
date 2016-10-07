@@ -56,7 +56,7 @@ void Simulator::run()
 {
     while (true)
     {
-        if (clock % 100 == 0)  { std::cerr << clock << '\t' << to_assign.size() << std::endl; }
+        if (clock % 100 == 0)  { std::cerr << clock << std::endl; }
 
         getNew();
 
@@ -78,7 +78,7 @@ void Simulator::run()
 
         int count = 0;
 
-        std::cerr << clock << ' ' << cursor << ' ' << to_assign.size() << ' ' << running.size() << ' ' << finish << std::endl;
+//        std::cerr << clock << ' ' << cursor << ' ' << to_assign.size() << ' ' << running.size() << ' ' << finish << std::endl;
 
         if (finish >= trans.size())
             break;

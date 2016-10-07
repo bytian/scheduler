@@ -21,11 +21,11 @@ vector<Action> genTrans()
     int time = 0;
     vector<Action> act;
     act.push_back(Action(time, Action::START, true));
+    int lockFrom = 0;
     while (true)
     {
         int dtime = 1 + poiA(genA);
 
-        int lockFrom = 0;
         
         double r = rand() / (double) RAND_MAX;
 

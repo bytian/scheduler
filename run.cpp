@@ -18,7 +18,7 @@ int main()
     int tot = 0;
     for (int i = 0; i < sim.getTotalTrans(); ++i)
     {
-        cerr << i << ": " << sim.getTrans(i).latency() << endl;
+//        cerr << i << ": " << sim.getTrans(i).latency() << endl;
         tot += sim.getTrans(i).latency();
     }
     cerr << "run" << endl;
