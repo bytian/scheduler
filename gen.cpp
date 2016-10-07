@@ -5,15 +5,15 @@
 #include "action.h"
 using namespace std;
 
-const int NUMLOCK = 100;
+const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
-const int NEWT = 5;
-const int NEWA = 3;
+const int NEWT = 10;
+const int NEWA = 10;
 const double FINPROB = 0.3;
 
-default_random_engine genT;
+default_random_engine genT(NEWT);
 poisson_distribution<int> poiT;
-default_random_engine genA;
+default_random_engine genA(NEWA);
 poisson_distribution<int> poiA;
 
 vector<Action> genTrans()
