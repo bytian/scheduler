@@ -67,9 +67,8 @@ void FIFO::release(int tid, int oid)
     if (sim->getObj(oid).getStatus() == Object::FREE)
     {
 //        std::cerr << "F23" << std::endl;
-        if (!exclTrans[oid].empty() && !inclTrans[oid].empty())
+        if (!exclTrans[oid].empty() || !inclTrans[oid].empty())
         {
-            std::cerr << "F24" << std::endl;
             sim->addToAssign(oid);
         }
     }

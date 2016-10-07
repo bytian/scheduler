@@ -34,6 +34,9 @@ private:
 
     // pointer to incoming transactions
     int cursor = 0;
+
+    // number of transactions that have finished
+    int finish = 0;
 private:
     /******************************************
      * Put new transactions into running

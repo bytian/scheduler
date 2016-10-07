@@ -23,7 +23,9 @@ void Object::addOwner(const std::set<int>& tid, bool excl)
 
 void Object::releaseBy(int tid)
 {
+//    std::cerr << "t" << tid << "wish to release me, before which I have " << owner.size() << " owners" << std::endl;
     owner.erase(tid);
+//    std::cerr << "now I have " << owner.size() << " owners" << std::endl;
 }
 
 const std::set<int>& Object::getOwner() const

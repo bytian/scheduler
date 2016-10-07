@@ -11,7 +11,8 @@ public:
     static const int RUNNING = 0;
     static const int BLOCKED = 1;
     static const int FINISH = -1;
-private:
+public:
+//private:
     // id of the transaction
     int id;
 
