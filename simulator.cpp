@@ -3,16 +3,21 @@
 #include "transaction.h"
 #include "scheduler.h"
 #include "action.h"
-//#include "fifo.h"
+#include "fifo.h"
 #include "oldestFirst.h"
-//#include "randomScheduler.h"
+#include "randomScheduler.h"
 #include "iostream"
+#include "oldestFirst.h"
+#include "fifo.h"
+#include "randomScheduler.h"
+
 
 #include <set>
 #include <vector>
 #include <iostream>
 
-#define SIM_SCHEDULER OldestFirst
+
+
 
 Simulator::Simulator()
 {
