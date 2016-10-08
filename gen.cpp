@@ -11,10 +11,10 @@ const int NEWT = 10;
 const int NEWA = 10;
 const double FINPROB = 0.3;
 
-default_random_engine genT(NEWT);
-poisson_distribution<int> poiT;
-default_random_engine genA(NEWA);
-poisson_distribution<int> poiA;
+default_random_engine genT;
+poisson_distribution<int> poiT(NEWT);
+default_random_engine genA;
+poisson_distribution<int> poiA(NEWA);
 
 vector<Action> genTrans()
 {
