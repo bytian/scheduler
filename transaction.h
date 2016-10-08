@@ -11,8 +11,7 @@ public:
     static const int RUNNING = 0;
     static const int BLOCKED = 1;
     static const int FINISH = -1;
-public:
-//private:
+private:
     // id of the transaction
     int id;
 
@@ -95,5 +94,7 @@ public:
     int getRunTime() { return curTime; }
 
     int getID() { return id; }
+
+    int getBlockBy() { return blockBy; }
 };
 #endif

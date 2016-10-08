@@ -10,7 +10,7 @@ class Simulator;
 
 class Scheduler
 {
-private:
+protected:
     Simulator* sim;
 public:
     /**************************************************

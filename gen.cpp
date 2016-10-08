@@ -7,8 +7,8 @@ using namespace std;
 
 const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
-const int NEWT = 10;
-const int NEWA = 10;
+const int NEWT = 100;
+const int NEWA = 100;
 const double FINPROB = 0.3;
 
 default_random_engine genT(NEWT);
