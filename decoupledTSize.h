@@ -13,6 +13,7 @@ private:
     std::vector<int> sizeT;
     std::vector<std::vector<int> > exclTrans;
     std::vector<std::vector<int> > inclTrans;
+    Simulator* sim;
 
 private:
     void updateO(int oid, int delta);

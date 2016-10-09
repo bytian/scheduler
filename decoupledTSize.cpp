@@ -26,9 +26,10 @@ bool DecoupledTSize::acquire(int tid, int oid, bool excl)
 
     if (status == Object::FREE)
     {
+        updateT(tid, sizeO[oid]);
         std::set<int> trans;
         trans.insert(tid);
-        sim->getObj(oid).addOwner(trans.excl);
+        sim->getObj(oid).addOwner(trans, excl);
         return true;
     }
 
@@ -49,7 +50,7 @@ bool DecoupledTSize::acquire(int tid, int oid, bool excl)
 void DecoupledTSize::release(int tid, int oid)
 {
     sim->getObj(oid).releaseBy(tid);
-    sizeT[tid] -= sizeO[oid];
+    updateT(tid, -sizeO[oid]);
 
     if (sim->getObj(oid).getStatus() == Object::FREE)
     {
@@ -65,13 +66,13 @@ const std::set<int> DecoupledTSize::assign(int oid)
     std::set<int> assigned;
 
     int maxSize = -1;
-    std::vector<int>::iterator maxpos;
+    int maxpos = -1;
 
     for (int i = 0; i < exclTrans[oid].size(); ++i)
     {
-        if (sizeT[exclTrans[i]] > maxSize)
+        if (sizeT[exclTrans[oid][i]] > maxSize)
         {
-            maxSize = sizeT[exclTrans[i]];
+            maxSize = sizeT[exclTrans[oid][i]];
             maxpos = i;
         }
     }
@@ -85,15 +86,16 @@ const std::set<int> DecoupledTSize::assign(int oid)
 
     if (inclSize < maxSize)
     {
-        int trans = exclTrans[maxpos];
+        int trans = exclTrans[oid][maxpos];
 
         updateO(oid, -maxSize - 1);
-        updateT(trans, sizeO[oid]);
 
         sim->getTrans(trans).grantLock();
 
+        updateT(trans, sizeO[oid]);
+
         assigned.insert(trans);
-        exclTrans.erase(exclTrans.begin() + maxpos);
+        exclTrans[oid].erase(exclTrans[oid].begin() + maxpos);
 
         sim->getObj(oid).addOwner(assigned, true);
     }
@@ -102,6 +104,7 @@ const std::set<int> DecoupledTSize::assign(int oid)
         updateO(oid, -inclSize - 1);
         for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end(); ++itr)
         {
+            sim->getTrans(*itr).grantLock();
             updateT(*itr, sizeO[oid]);
             assigned.insert(*itr);
         }
@@ -119,7 +122,7 @@ int DecoupledTSize::getTime() { return sim->getTime(); }
 void DecoupledTSize::updateO(int oid, int delta)
 {
     sizeO[oid] += delta;
-    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(obj).getOwner().end(); ++itr)
+    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
     {
         updateT(*itr, delta);
     }

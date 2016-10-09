@@ -14,7 +14,7 @@ fifo: scheduler.cpp fifo.cpp randomScheduler.cpp oldestFirst.cpp transaction.cpp
 random: scheduler.cpp fifo.cpp randomScheduler.cpp oldestFirst.cpp transaction.cpp simulator.cpp run.cpp object.cpp decoupledTSize.cpp
 	$(CXX) -o $@ $^ -DSIM_SCHEDULER=RandomScheduler
 
-dtsize: scheduler.cpp fifo.cpp randomScheduler.cpp oldestFirst.cpp transaction.cpp simulator.cpp run.cpp object.cpp decoupledTize.cpp
+dtsize: scheduler.cpp fifo.cpp randomScheduler.cpp oldestFirst.cpp transaction.cpp simulator.cpp run.cpp object.cpp decoupledTSize.cpp
 	$(CXX) -o $@ $^ -DSIM_SCHEDULER=DecoupledTSize
 
 
