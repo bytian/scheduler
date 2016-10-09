@@ -92,7 +92,7 @@ const std::set<int> DecoupledTSize::assign(int oid)
 
         sim->getTrans(trans).grantLock();
 
-        updateT(trans, sizeO[oid]);
+        updateT(trans, sizeO[oid]); // grant lock BEFORE this update ! ! !
 
         assigned.insert(trans);
         exclTrans[oid].erase(exclTrans[oid].begin() + maxpos);
@@ -105,7 +105,7 @@ const std::set<int> DecoupledTSize::assign(int oid)
         for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end(); ++itr)
         {
             sim->getTrans(*itr).grantLock();
-            updateT(*itr, sizeO[oid]);
+            updateT(*itr, sizeO[oid]); // grant lock BEFORE this update ! ! ! 
             assigned.insert(*itr);
         }
 
