@@ -7,9 +7,10 @@ using namespace std;
 
 const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
-const double NEWT = .1;
-const double NEWA = .01;
+const double NEWT = 0.1;
+const double NEWA = 10;
 const double FINPROB = 0.3;
+const double LOCK_TYPE_PROB = 0.5;
 
 default_random_engine genT;
 exponential_distribution<double> poiT(NEWT);
@@ -28,12 +29,14 @@ vector<Action> genTrans()
 
         
         double r = rand() / (double) RAND_MAX;
+        double t = rand() / (double) RAND_MAX;
+        bool lock_type = t < LOCK_TYPE_PROB;
 
         if (lockFrom == NUMLOCK) r = 0.;
 
         if (r < 0.4) // finish
         {
-            act.push_back(Action(time += dtime, Action::FINISH, true));
+            act.push_back(Action(time += dtime, Action::FINISH, lock_type));
             break;
         }
         else // acquire a lock (for now assume all locks are EXCLUSIVE)
