@@ -10,6 +10,15 @@ class Simulator;
 class DP : public Scheduler
 {
 private:
+    class Cmp
+    {
+    private:
+        DP* dp;
+    public:
+        Cmp(DP* dp) : dp(dp) {}
+        bool operator()(int t1, int t2) { return dp->sizeT[t1] > dp->sizeT[t2]; }
+    };
+private:
     double f(int r) { return log(1. + r) / log(2.); }
     const static double ALPHA;
 
@@ -23,8 +32,7 @@ private:
 private:
     void updateO(int oid, int delta);
     void updateT(int tid, int delta);
-    const std::set<int> run_dp(int oid);
-    bool cmp(int, int) const;
+    int run_dp(int oid);
 
 public:
     DP();
