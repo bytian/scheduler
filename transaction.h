@@ -93,6 +93,11 @@ public:
      ********************************************/
     int getRunTime() { return curTime; }
 
+    /********************************************
+     * Query how long the transaction is blocked
+     ********************************************/
+    int getWaitTime() { return (endTime < 0) ? -1 : (endTime - startTime -  acts.back().time); }
+
     int getID() { return id; }
 
     int getBlockBy() { return blockBy; }
