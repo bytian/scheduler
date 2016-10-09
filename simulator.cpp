@@ -11,6 +11,8 @@
 #include "fifo.h"
 #include "randomScheduler.h"
 #include "decoupledTSize.h"
+#include "dp.h"
+#include "NoSplitReadsScheduler.h"
 
 
 #include <set>
