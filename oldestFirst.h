@@ -18,7 +18,7 @@ class Simulator;
 struct Comparater { // customized comparater for the priority queue
     bool operator() (Transaction* Ta, Transaction* Tb)
     {
-        if (Ta->getStartTime() < Tb->getStartTime())
+        if (Ta->getStartTime() > Tb->getStartTime())
             return true;
         else
             return false;
