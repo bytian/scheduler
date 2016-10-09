@@ -22,7 +22,7 @@ private:
     struct Comparater { // customized comparater for the priority queue
         bool operator() (pair<int, int>* Ta, pair<int, int>* Tb)
         {
-            if (Ta->second < Tb->second)
+            if (Ta->second > Tb->second)
                 return true;
             else
                 return false;

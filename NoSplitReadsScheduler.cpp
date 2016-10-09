@@ -5,26 +5,29 @@
 #include "NoSplitReadsScheduler.h"
 #include "object.h"
 #include "simulator.h"
+#include <iostream>
 #include <algorithm>
+
+using namespace std;
 
 NoSplitReadsScheduler::NoSplitReadsScheduler() : Scheduler() {}
 
 NoSplitReadsScheduler::NoSplitReadsScheduler(Simulator* sim) : sim(sim) {}
 
-void NoSplitReadsScheduler::init()
-{
+void NoSplitReadsScheduler::init() {
+
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
     sizeO.resize(sim->getTotalObj(), 0);
-    sizeT.resize(sim->getTotalTrans());
+    sizeT.resize(sim->getTotalTrans(), make_pair(0, 0));
     for(int i = 0; i < sizeT.size(); i ++){
         sizeT[i].first = i;
         sizeT[i].second = 0;
     }
 }
 
-bool NoSplitReadsScheduler::acquire(int tid, int oid, bool excl)
-{
+bool NoSplitReadsScheduler::acquire(int tid, int oid, bool excl) {
+
     int status = sim->getObj(oid).getStatus();
 
     if (status == Object::FREE) {
@@ -48,6 +51,7 @@ bool NoSplitReadsScheduler::acquire(int tid, int oid, bool excl)
 }
 
 void NoSplitReadsScheduler::release(int tid, int oid) {
+
     sim->getObj(oid).releaseBy(tid);
     updateT(tid, -sizeO[oid]);
 
@@ -58,25 +62,26 @@ void NoSplitReadsScheduler::release(int tid, int oid) {
     }
 }
 
-const std::set<int> NoSplitReadsScheduler::assign(int oid)
-{
+const std::set<int> NoSplitReadsScheduler::assign(int oid) {
+
     std::set<int> assigned;
 
     std::sort(exclTrans[oid].begin(), exclTrans[oid].end(), myComparater);
 
     int inclSize = 0;
-    for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end(); ++itr)
-    {
+    for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end(); ++itr) {
         inclSize += sizeT[*itr].second + 1;
     }
 
-    int n, min_position = exclTrans.size();
+    int n= exclTrans[oid].size(), min_position = exclTrans[oid].size();
 
-    double latency, min_latency = n * inclSize;
+    double latency = n * inclSize, min_latency = n * inclSize;
 
     double readTime = f(inclSize);
     while(n > 0) {
+
         latency += (- inclSize + readTime * exclTrans[oid][n-1]->second);
+
         if (min_latency > latency) {
             min_latency = latency;
             min_position --;
@@ -85,8 +90,9 @@ const std::set<int> NoSplitReadsScheduler::assign(int oid)
     }
 
 
+
     if (min_position > 0) { //assign the lock to write
-        int trans = exclTrans[oid][0]->second;
+        int trans = exclTrans[oid][0]->first;
 
         updateO(oid, - exclTrans[oid][0]->second - 1);
 
@@ -118,8 +124,7 @@ const std::set<int> NoSplitReadsScheduler::assign(int oid)
 
 int NoSplitReadsScheduler::getTime() { return sim->getTime(); }
 
-void NoSplitReadsScheduler::updateO(int oid, int delta)
-{
+void NoSplitReadsScheduler::updateO(int oid, int delta) {
     sizeO[oid] += delta;
     for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
     {
