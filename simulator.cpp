@@ -7,12 +7,36 @@
 #include "oldestFirst.h"
 #include "randomScheduler.h"
 #include "iostream"
+
+#ifdef OLDEST
 #include "oldestFirst.h"
+#define SIM_SCHEDULER OldestFirst
+#endif
+
+#ifdef Fifo
 #include "fifo.h"
+#define SIM_SCHEDULER FIFO
+#endif
+
+#ifdef RANDOM
 #include "randomScheduler.h"
+#define SIM_SCHEDULER RandomScheduler
+#endif
+
+#ifdef DTSIZE
 #include "decoupledTSize.h"
+#define SIM_SCHEDULER DecoupledTSize
+#endif
+
+#ifdef Dp
 #include "dp.h"
+#define SIM_SCHEDULER DP
+#endif
+
+#ifdef NOSPLIT
 #include "NoSplitReadsScheduler.h"
+#define SIM_SCHEDULER NoSplitReadsScheduler
+#endif
 
 
 #include <set>

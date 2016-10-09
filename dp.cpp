@@ -9,16 +9,16 @@
 #include <algorithm>
 #include <iostream>
 
-const static double DP:ALPHA = 1.2;
+const double DP::ALPHA = 1.2;
 
-DP:DP() : Scheduler() {}
+DP::DP() : Scheduler() {}
 
-DP:DP(Simulator* sim) : sim(sim) {}
+DP::DP(Simulator* sim) : sim(sim) {}
 
 void DP::init()
 {
     exclTrans.resize(sim->getTotalObj());
-    inclTrans.resize(sim->getTotalOjb());
+    inclTrans.resize(sim->getTotalObj());
     sizeO.resize(sim->getTotalObj(), 0);
     sizeT.resize(sim->getTotalTrans(), 0);
 }
@@ -29,7 +29,7 @@ bool DP::acquire(int tid, int oid, bool excl)
 
     if (status == Object::FREE)
     {
-        updateT(tid sizeO[oid]);
+        updateT(tid, sizeO[oid]);
         std::set<int> trans;
         trans.insert(tid);
         sim->getObj(oid).addOwner(trans, excl);
@@ -38,7 +38,7 @@ bool DP::acquire(int tid, int oid, bool excl)
 
     if (excl)
     {
-        excltrans[oid].push_back(tid);
+        exclTrans[oid].push_back(tid);
         updateO(oid, 1 + sizeT[tid]);
     }
     else
@@ -50,7 +50,7 @@ bool DP::acquire(int tid, int oid, bool excl)
     return false;
 }
 
-void DP:release(int tid, int oid)
+void DP::release(int tid, int oid)
 {
     sim->getObj(oid).releaseBy(tid);
     updateT(tid, -sizeO[oid]);
@@ -105,12 +105,12 @@ void DP::updateT(int tid, int delta)
     }
 }
 
-bool DP::cmp(int t1, int t2) const;
+bool DP::cmp(int t1, int t2) const
 {
     return sizeT[t1] > sizeT[t2];
 }
 
-std::set<int> run_dp(int oid)
+const std::set<int> DP::run_dp(int oid)
 {
     sort(exclTrans[oid].begin(), exclTrans[oid].end(), cmp);
     sort(inclTrans[oid].begin(), inclTrans[oid].end(), cmp);
