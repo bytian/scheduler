@@ -102,19 +102,6 @@ const std::set<int> DP::assign(int oid)
         sim->getObj(oid).addOwner(assigned, false);
     }
 
-    int cnt = 0;
-    for (auto itr = assigned.begin(); itr != assigned.end(); ++itr)
-    {
-        cnt += sizeT[*itr] + 1;
-    }
-    updateO(oid, -cnt);
-
-    for (auto itr = assigned.begin(); ++itr != assigned.end(); ++itr)
-    {
-        sim->getTrans(*itr).grantLock();
-        updateT(*itr, sizeO[oid]);
-    }
-
     return assigned;
 }
 
