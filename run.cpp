@@ -14,7 +14,7 @@ int main()
     cerr << "input" << endl;
     sim.run();
 
-    int tot = 0;
+    long long tot = 0;
     for (int i = 0; i < sim.getTotalTrans(); ++i)
     {
 //        cerr << i << ": " << sim.getTrans(i).latency() << endl;

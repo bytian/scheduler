@@ -7,14 +7,14 @@ using namespace std;
 
 const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
-const int NEWT = 100;
-const int NEWA = 100;
+const double NEWT = .1;
+const double NEWA = .01;
 const double FINPROB = 0.3;
 
 default_random_engine genT;
-poisson_distribution<int> poiT(NEWT);
+exponential_distribution<double> poiT(NEWT);
 default_random_engine genA;
-poisson_distribution<int> poiA(NEWA);
+exponential_distribution<double> poiA(NEWA);
 
 vector<Action> genTrans()
 {
