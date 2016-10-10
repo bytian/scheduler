@@ -7,14 +7,21 @@ using namespace std;
 
 const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
+<<<<<<< HEAD
 const double NEWT = 0.1;
 const double NEWA = 0.05;
 const double FINPROB = 0.2;
 const double LOCK_TYPE_PROB = 0.5;
+=======
+const double NEWT = 0.32;
+const double NEWA = 0.005;
+const double FINPROB = 0.3;
+const double LOCK_TYPE_PROB = 1;
+>>>>>>> 88a411c07a6c1d9d2edf3cb08176ac2c4dfc4aed
 
-default_random_engine genT;
+default_random_engine genT((unsigned) time(0));
 exponential_distribution<double> poiT(NEWT);
-default_random_engine genA;
+default_random_engine genA((unsigned) time(0));
 exponential_distribution<double> poiA(NEWA);
 
 vector<Action> genTrans()
@@ -30,7 +37,7 @@ vector<Action> genTrans()
         
         double r = rand() / (double) RAND_MAX;
         double t = rand() / (double) RAND_MAX;
-        bool lock_type = t < LOCK_TYPE_PROB;
+        bool lock_type = t <= LOCK_TYPE_PROB;
 
         if (lockFrom == NUMLOCK) r = 0.;
 

@@ -90,7 +90,7 @@ void Simulator::run()
 {
     while (true)
     {
-        if (clock % 100 == 0)  { std::cerr << clock << std::endl; }
+        if (clock % 10000 == 0)  { std::cerr << clock << std::endl; }
 
         getNew();
 
