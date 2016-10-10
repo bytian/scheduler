@@ -178,5 +178,3 @@ Object& Simulator::getObj(int oid)
 {
     return obj[oid];
 }
-
-#undef SIM_SCHEDULER
