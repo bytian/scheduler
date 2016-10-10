@@ -36,14 +36,14 @@ vector<Action> genTrans()
 
         if (r < 0.4) // finish
         {
-            act.push_back(Action(time += dtime, Action::FINISH, lock_type));
+            act.push_back(Action(time += dtime, Action::FINISH, true));
             break;
         }
         else // acquire a lock (for now assume all locks are EXCLUSIVE)
         {
             // only locks from lockFrom can be acquired
             int lock = rand() % (NUMLOCK - lockFrom) + lockFrom; // each lock has equal probability to be acquired
-            act.push_back(Action(time += dtime, lock, true));
+            act.push_back(Action(time += dtime, lock, lock_type));
             lockFrom = lock + 1;
         }
     }

@@ -80,7 +80,7 @@ const std::set<int> FIFO::assign(int oid)
 //    std::cerr << "\tassigning object " << oid << std::endl;
     std::set<int> assigned;
 
-    if (inclTime[oid] < 0 || inclTime[oid] > exclTime[oid].front())
+    if (inclTime[oid] < 0 || (!exclTrans[oid].empty() && inclTime[oid] > exclTime[oid].front()))
     {
         int trans = exclTrans[oid].front();
         sim->getTrans(trans).grantLock();
@@ -104,6 +104,7 @@ const std::set<int> FIFO::assign(int oid)
 
         sim->getObj(oid).addOwner(assigned, false);
     }
+
     return assigned;
 }
 

@@ -62,7 +62,7 @@ const std::set<int> OldestFirst::assign(int oid)
 {
     std::set<int> assigned;
 
-    if (minInclStartTime[oid] < 0 || minInclStartTime[oid] > exclTrans[oid].top()->getStartTime() ) { // assign the write lock
+    if (minInclStartTime[oid] < 0 || (!exclTrans[oid].empty() && minInclStartTime[oid] > exclTrans[oid].top()->getStartTime() )) { // assign the write lock
         int trans = exclTrans[oid].top()->getID();
         sim->getTrans(trans).grantLock();
 
