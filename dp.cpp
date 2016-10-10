@@ -133,8 +133,8 @@ int DP::run_dp(int oid)
 
     int n = inclTrans[oid].size();
     int m = exclTrans[oid].size();
-    std::vector<std::vector<std::vector<double > > > d(n + 2, std::vector<std::vector<double> >(m + 1, std::vector<double>(m + n + 1, -1.)));
-    std::vector<std::vector<std::vector<double> > > step(n + 1, std::vector<std::vector<double> >(m + 1, std::vector<double>(m + n + 1, -1)));
+    std::vector<std::vector<std::vector<double > > > d(n + 1, std::vector<std::vector<double> >(m + 1, std::vector<double>(m + n + 1, -1.)));
+    std::vector<std::vector<std::vector<int> > > step(n + 1, std::vector<std::vector<int> >(m + 1, std::vector<int>(m + n + 1, -2)));
     std::vector<int> sumIn(n + 1);
     std::vector<int> sumEx(m + 1);
     sumIn[n] = 0;
@@ -151,9 +151,9 @@ int DP::run_dp(int oid)
 
     d[0][0][0] = 0.;
 
-    for (int j = 0; j < m; ++j)
+    for (int j = 0; j <= m; ++j)
     {
-        for (int i = 0; i < n; ++i)
+        for (int i = 0; i <= n; ++i)
         {
             for (int t = j; t <= i + j; ++t)
             {
@@ -161,10 +161,13 @@ int DP::run_dp(int oid)
                     
                 double x = d[i][j][t] + sumEx[j + 1] + sumIn[i] + m - j - 1 + n - i + .5 * ALPHA * (sumEx[j] + sumIn[i]) + ALPHA * (sumEx[j + 1] + sumIn[i]) * t;
 
-                if (d[i][j + 1][t + 1] < 0 || x < d[i][j + 1][t + 1])
+                if (j < m)
                 {
-                    d[i][j + 1][t + 1] = x;
-                    step[i][j + 1][t + 1] = -1;
+                    if (d[i][j + 1][t + 1] < 0 || x < d[i][j + 1][t + 1])
+                    {
+                        d[i][j + 1][t + 1] = x;
+                        step[i][j + 1][t + 1] = -1;
+                    }
                 }
 
                 for (int l = i + 1; l <= n; ++l)
@@ -172,11 +175,10 @@ int DP::run_dp(int oid)
                     double x = d[i][j][t] + (sumIn[i] - sumIn[l]) + (sumEx[j] + sumIn[l] + m - j + n - l) * f(l - i) + .5 * ALPHA * (sumEx[j] + sumIn[i]) * f(l - i) * f(l - i) + ALPHA * (sumEx[j] + sumIn[l]) * t * f(l - i);
 
                     int k = t + ceil(f(l - i));
-
                     if (d[l][j][k] < 0 || x < d[l][j][k])
                     {
                         d[l][j][k] = x;
-                        step[l][k][j] = i;
+                        step[l][j][k] = i;
                     }
                 }
             }
@@ -188,7 +190,7 @@ int DP::run_dp(int oid)
 
     for (int t = m; t <= m + n; ++t)
     {
-        if (d[n][m][t] < minD)
+        if (d[n][m][t] >= 0 || d[n][m][t] < minD)
         {
             minD = d[n][m][t];
             minT = t;
@@ -197,6 +199,7 @@ int DP::run_dp(int oid)
 
     int i = n, j = m, t = minT;
     int next;
+
     while (true)
     {
         int ii = i, jj = j;
@@ -212,8 +215,8 @@ int DP::run_dp(int oid)
         }
         else
         {
-            t -= ceil(f(i - step[i][j][t]));
             ii = step[i][j][t];
+            t -= ceil(f(i - step[i][j][t]));
             if (ii == 0 && jj == 0)
             {
                 next = ii;

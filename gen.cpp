@@ -8,8 +8,8 @@ using namespace std;
 const int NUMLOCK = 10;
 const int NUMTRAN = 20000;
 const double NEWT = 0.1;
-const double NEWA = 10;
-const double FINPROB = 0.3;
+const double NEWA = 0.05;
+const double FINPROB = 0.2;
 const double LOCK_TYPE_PROB = 0.5;
 
 default_random_engine genT;
@@ -34,7 +34,7 @@ vector<Action> genTrans()
 
         if (lockFrom == NUMLOCK) r = 0.;
 
-        if (r < 0.4) // finish
+        if (r < FINPROB) // finish
         {
             act.push_back(Action(time += dtime, Action::FINISH, true));
             break;
