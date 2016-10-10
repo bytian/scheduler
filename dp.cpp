@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <iostream>
 
+double DP::f(int r) { return log(1. + r) / log(2.); } 
+
 const double DP::ALPHA = 0;
 
 DP::DP() : Scheduler() {}
@@ -102,6 +104,12 @@ const std::set<int> DP::assign(int oid)
         sim->getObj(oid).addOwner(assigned, false);
     }
 
+//    for (auto itr = assigned.begin(); itr != assigned.end(); ++itr)
+//    {
+//        std::cout << *itr << ' ';
+//    }
+//    std::cout << std::endl;
+
     return assigned;
 }
 
@@ -175,7 +183,7 @@ int DP::run_dp(int oid)
                     double x = d[i][j][t] + (sumIn[i] - sumIn[l]) + (sumEx[j] + sumIn[l] + m - j + n - l) * f(l - i) + .5 * ALPHA * (sumEx[j] + sumIn[i]) * f(l - i) * f(l - i) + ALPHA * (sumEx[j] + sumIn[l]) * t * f(l - i);
 
                     int k = t + ceil(f(l - i));
-                    if (d[l][j][k] < 0 || x < d[l][j][k])
+                    if (d[l][j][k] < 0. || x < d[l][j][k])
                     {
                         d[l][j][k] = x;
                         step[l][j][k] = i;
@@ -190,7 +198,7 @@ int DP::run_dp(int oid)
 
     for (int t = m; t <= m + n; ++t)
     {
-        if (d[n][m][t] >= 0 || d[n][m][t] < minD)
+        if (d[n][m][t] >= 0. && d[n][m][t] < minD)
         {
             minD = d[n][m][t];
             minT = t;
@@ -219,7 +227,7 @@ int DP::run_dp(int oid)
             t -= ceil(f(i - step[i][j][t]));
             if (ii == 0 && jj == 0)
             {
-                next = ii;
+                next = i;
                 break;
             }
         }
@@ -227,6 +235,25 @@ int DP::run_dp(int oid)
         i = ii;
         j = jj;
     }
+
+    /*
+    if (next == 1 && inclTrans[oid][0] == 190)
+    {
+        std::cout << "(n,m) = " << n << ' ' << m << std::endl;
+        for (int i = 0; i <= n; ++i)
+        {
+            for (int j = 0; j <= m; ++j)
+            {
+                for (int t = 0; t <= m + n; ++t)
+                {
+                    std::cout << d[i][j][t] << ' ';
+                }
+                std::cout << std::endl;
+            }
+            std::cout << std::endl << std::endl;
+        }
+    }
+    */
 
     return next;
 }

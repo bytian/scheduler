@@ -19,7 +19,7 @@ private:
         bool operator()(int t1, int t2) { return dp->sizeT[t1] > dp->sizeT[t2]; }
     };
 private:
-    double f(int r) { return log(1. + r) / log(2.); }
+    double f(int r); 
     const static double ALPHA;
 
 private: 
