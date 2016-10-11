@@ -76,8 +76,8 @@ const std::set<int> NoSplitReadsScheduler::assign(int oid) {
     int n= exclTrans[oid].size(), min_position = exclTrans[oid].size();
 
     double latency = n * inclSize, min_latency = n * inclSize;
+    double readTime = f(inclTrans[oid].size());
 
-    double readTime = f(inclSize);
     while(n > 0) {
 
         latency += (- inclSize + readTime * exclTrans[oid][n-1]->second);
