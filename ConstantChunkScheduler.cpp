@@ -66,6 +66,7 @@ void ConstantChunkScheduler::release(int tid, int oid) {
     }
 }
 
+
 const std::set<int> ConstantChunkScheduler::assign(int oid) {
 
     std::set<int> assigned;
@@ -75,11 +76,14 @@ const std::set<int> ConstantChunkScheduler::assign(int oid) {
 
     unsigned int firstChunkSize = 0;
     unsigned int restChunkSize = 0;
-    firstChunkSize = accumulate(inclTrans[oid].begin(), inclTrans[oid].begin()+ ChunkSize, 0, pairSum);
-    restChunkSize = accumulate(inclTrans[oid].begin() + ChunkSize + 1, inclTrans[oid].end(), 0, pairSum);
+    for (auto it = inclTrans[oid].begin(); it < inclTrans[oid].begin() + ChunkSize; it ++)
+        firstChunkSize += (*it)->second;
+    for (auto it = inclTrans[oid].begin()+ ChunkSize; it < inclTrans[oid].end() + ChunkSize; it ++)
+        restChunkSize += (*it)->second;
 
     unsigned int totalWriteSize = 0;
-    totalWriteSize = accumulate(exclTrans[oid].begin(), inclTrans[oid].end(), 0, pairSum);
+    for (auto it = exclTrans[oid].begin()+ ChunkSize; it < exclTrans[oid].end() + ChunkSize; it ++)
+        totalWriteSize += (*it)->second;
 
     double latencyW = totalWriteSize + firstChunkSize + restChunkSize;
     double latencyR = f(ChunkSize) * (restChunkSize + totalWriteSize) + firstChunkSize;

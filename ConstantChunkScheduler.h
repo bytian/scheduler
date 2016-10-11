@@ -29,8 +29,6 @@ private:
         }
     } myComparater;
 
-    int pairSum(pair<int, int>* Ta, pair<int, int>* Tb) { return Ta->second + Tb->second;}
-
     vector<int> sizeO;
     vector< pair<int, int> > sizeT;
     vector< vector< pair<int, int>* > > exclTrans;
