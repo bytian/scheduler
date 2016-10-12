@@ -49,7 +49,7 @@ set<int> RandomSeqGen::getUniformSeq(int n) {
     return  sequence;
 }
 
-
+/*
 int main () {
     srand (time(NULL));
     RandomSeqGen* randGen = new RandomSeqGen(10, 1.5);
@@ -72,3 +72,4 @@ int main () {
     delete randGen;
     return  1;
 }
+ */
