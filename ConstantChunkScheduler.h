@@ -34,7 +34,7 @@ private:
     vector< vector< pair<int, int>* > > exclTrans;
     vector< vector< pair<int, int>* > > inclTrans;
     Simulator* sim;
-    int ChunkSize;
+    int chunkSize;
 private:
     double f(int r) { return log(1.0 + r) / log(2.);}
     void updateO(int oid, int delta);

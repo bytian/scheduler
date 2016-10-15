@@ -16,8 +16,6 @@ FIFO::FIFO(Simulator* sim) : sim(sim) {}
 
 void FIFO::init()
 {
-    std::cerr << sim << std::endl;
-    std::cerr << sim->getTotalObj() << std::endl;
     exclTrans.resize(sim->getTotalObj());
     inclTrans.resize(sim->getTotalObj());
     exclTime.resize(sim->getTotalObj());

@@ -5,7 +5,6 @@
 #include <vector>
 #include <math.h>
 #include <random>
-#include <set>
 #include <iostream>
 
 using namespace std;
@@ -18,34 +17,36 @@ private:
 public:
     RandomSeqGen(int elementNumn, double gama);
     ~RandomSeqGen(){};
-    set<int> getUniformSeq(int n);
-    set<int> getPowerLawSeq(int n);
+    vector<int> getUniformSeq(int n);
+    vector<int> getPowerLawSeq(int n);
 };
 
 RandomSeqGen::RandomSeqGen(int elementNum, double gama) {
     totalElementNum = elementNum;
-    for (int i = 1; i <= totalElementNum; i++){
-        for(int j = 0; j < pow(i, gama); j ++){
+    for (int i = 0; i <= totalElementNum-1; i++){
+        for(int j = 0; j < pow(i+1, gama); j ++){
             powerLawPool.push_back(i);
         }
     }
 }
 
-set<int> RandomSeqGen::getPowerLawSeq(int n) {
-    set<int> sequence;
+vector<int> RandomSeqGen::getPowerLawSeq(int n) {
+    vector<int> sequence;
     for(int i = 0; i < n; i ++){
         int r = rand() % powerLawPool.size();
-        sequence.insert(powerLawPool[r]);
+        sequence.push_back(powerLawPool[r]);
     }
+    sort(sequence.begin(), sequence.end());
     return sequence;
 }
 
-set<int> RandomSeqGen::getUniformSeq(int n) {
-    set<int> sequence;
+vector<int> RandomSeqGen::getUniformSeq(int n) {
+    vector<int> sequence;
     for(int i = 0; i < n; i ++){
-        int r = rand() % n + 1;
-        sequence.insert(r);
+        int r = rand() % n;
+        sequence.push_back(r);
     }
+    sort(sequence.begin(), sequence.end());
     return  sequence;
 }
 
@@ -55,7 +56,7 @@ int main () {
     RandomSeqGen* randGen = new RandomSeqGen(10, 1.5);
 
     for (int i = 0; i < 10; i++){
-        set<int> result;
+        vector<int> result;
 
         if (i < 5){
             result = randGen->getUniformSeq(8);
@@ -72,4 +73,4 @@ int main () {
     delete randGen;
     return  1;
 }
- */
+*/

@@ -2,7 +2,7 @@
 
 CXX=g++ -std=c++11
 
-all : oldest fifo random dtsize dp nosplit
+all : oldest fifo random dtsize dp nosplit constchunk agesum
 
 
 oldest: scheduler.cpp oldestFirst.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
@@ -23,6 +23,12 @@ dp: scheduler.cpp dp.cpp transaction.cpp simulator.cpp run.cpp object.cpp
 nosplit: scheduler.cpp NoSplitReadsScheduler.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
 	$(CXX) -o $@ $^ -DNOSPLIT -O2
 
+constchunk: scheduler.cpp ConstantChunkScheduler.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
+	$(CXX) -o $@ $^ -DCONSTCHUNK -O2
+
+agesum: scheduler.cpp AgeSumScheduler.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
+	$(CXX) -o $@ $^ -DAGESUM -O2
+
 clean:
-	rm -f gen oldest fifo random dtsize dp nosplit
+	rm -f gen oldest fifo random dtsize dp nosplit constchunk agesum
 

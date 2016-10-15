@@ -38,6 +38,16 @@
 #define SIM_SCHEDULER NoSplitReadsScheduler
 #endif
 
+#ifdef CONSTCHUNK
+#include "ConstantChunkScheduler.h"
+#define SIM_SCHEDULER ConstantChunkScheduler
+#endif
+
+#ifdef AGESUM
+#include "AgeSumScheduler.h"
+#define SIM_SCHEDULER AgeSumScheduler
+#endif
+
 
 #include <set>
 #include <vector>

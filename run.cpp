@@ -25,7 +25,7 @@ int main()
         waitt += sim.getTrans(i).getWaitTime();
     }
     cerr << "run" << endl;
-    cout << "average latency:" << tot / (double) sim.getTotalTrans() << endl;
-    cout << "average wait time:" << waitt / (double) sim.getTotalTrans() << endl;
+    cout << tot / (double) sim.getTotalTrans() << " "; //average latency:
+    cout << waitt / (double) sim.getTotalTrans() << endl;  //average wait time:
     return 0;
 }
