@@ -82,25 +82,25 @@ const std::set<int> ConstantChunkScheduler::assign(int oid) {
 
     for (auto it = inclTrans[oid].begin(); it < inclTrans[oid].begin() + chunkSize and it < inclTrans[oid].end(); it ++)
         firstChunkSize += (*it)->second;
-    //cerr << "I am here ..adf." << endl;
+
     if (chunkSize >= inclTrans[oid].size())
         restChunkSize = 0;
     else {
-        for (auto it = inclTrans[oid].begin()+ chunkSize; it < inclTrans[oid].end(); it ++)
+        for (auto it = inclTrans[oid].begin()+chunkSize; it < inclTrans[oid].end(); it ++)
             restChunkSize += (*it)->second;
     }
-    //cerr << "I am here ..." << endl;
+
     unsigned int totalWriteSize = 0;
     for (auto it = exclTrans[oid].begin(); it < exclTrans[oid].end(); it ++)
         totalWriteSize += (*it)->second;
 
-    double latencyW = totalWriteSize + firstChunkSize + restChunkSize;
-    double latencyR = f(chunkSize) * (restChunkSize + totalWriteSize) + firstChunkSize;
+    double latencyW = totalWriteSize + 2 * firstChunkSize;
+    double latencyR = f(chunkSize) * totalWriteSize + firstChunkSize;
     //cerr << "I am here" << endl;
     if (exclTrans[oid].size() > 0 and (inclTrans[oid].size() == 0 or latencyR >= latencyW)) { //assign the lock to write
-        //cerr << "I am in if first" << endl;
+
         int trans = exclTrans[oid][0]->first;
-        //cerr << "I am here1" << endl;
+
         updateO(oid, - exclTrans[oid][0]->second - 1);
 
         sim->getTrans(trans).grantLock();
@@ -113,16 +113,16 @@ const std::set<int> ConstantChunkScheduler::assign(int oid) {
         sim->getObj(oid).addOwner(assigned, true);
     }
     else if (inclTrans[oid].size() > 0 and (exclTrans[oid].size() == 0 or latencyR < latencyW)) {  //assign the lock to reads of the first chunk
-        //cerr << "I am in if second" << endl;
+
         updateO(oid, -firstChunkSize);
-        //cerr << "I am here2" << endl;
+
         for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end() and itr != inclTrans[oid].begin()+chunkSize; ++itr) {
             int trans = (*itr)->first;
             sim->getTrans(trans).grantLock();
             updateT(trans, sizeO[oid]); // grant lock BEFORE this update ! ! !
             assigned.insert(trans);
         }
-        //cerr << "I am here222" << endl;
+
         if (chunkSize >= inclTrans[oid].size())
             inclTrans[oid].erase(inclTrans[oid].begin(), inclTrans[oid].end());
         else
@@ -146,8 +146,7 @@ void ConstantChunkScheduler::updateO(int oid, int delta) {
 void ConstantChunkScheduler::updateT(int tid, int delta) {
     sizeT[tid].second += delta;
     int oid = sim->getTrans(tid).getBlockBy();
-    if (oid > 0)
-    {
+    if (oid > 0) {
         updateO(oid, delta);
     }
 }
