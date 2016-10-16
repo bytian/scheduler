@@ -11,7 +11,7 @@ using namespace std;
 
 //const double FINPROB = 0.35;
 
-vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine& genA,exponential_distribution<double> poiA, int NUM_TRAIL, double LOCK_TYPE_PROB, int USE_POWER_LAW)
+vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine& genA,exponential_distribution<double>& poiA, int NUM_TRAIL, double LOCK_TYPE_PROB, int USE_POWER_LAW)
 {
     int time = 0;
     vector<Action> act;
@@ -83,6 +83,8 @@ int main(int argc, const char * argv[]) {
     exponential_distribution<double> poiT(NEWT);
     default_random_engine genA((unsigned) time(0));
     exponential_distribution<double> poiA(NEWA);
+    default_random_engine genNumA((unsigned) time(0));
+    geometric_distribution<int> geoNumA(1 / (double) NUM_TRAIL);
 
     cout << NUM_OBJ << ' ' << NUM_TRAN << endl;
 
@@ -92,7 +94,8 @@ int main(int argc, const char * argv[]) {
 
     for (int i = 0; i < NUM_TRAN; ++i)
     {
-        vector<Action> acts = genTrans(randGen, genA, poiA, NUM_TRAIL, LOCK_TYPE_PROB, USE_POWER_LAW);
+        int numTrial = geoNumA(genNumA);
+        vector<Action> acts = genTrans(randGen, genA, poiA, numTrial, LOCK_TYPE_PROB, USE_POWER_LAW);
         cout << startTime << ' ' << acts.size() << endl;
         for (int j = 0; j < acts.size(); ++j) {
             cout << acts[j].time << ' ' << acts[j].lock << ' ' << acts[j].excl << endl;

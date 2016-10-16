@@ -44,7 +44,7 @@ vector<int> RandomSeqGen::getPowerLawSeq(int n) {
 vector<int> RandomSeqGen::getUniformSeq(int n) {
     vector<int> sequence;
     for(int i = 0; i < n; i ++){
-        int r = rand() % n;
+        int r = rand() % totalElementNum;
         sequence.push_back(r);
     }
     sort(sequence.begin(), sequence.end());
