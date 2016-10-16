@@ -7,7 +7,7 @@ for num_trans in 20000 # number of total transactions
 do
 	for num_obj in 10 25 50 # number of objects
 	do
-		for num_trial in $(($num_obj/2)) # number of actions in each transaction
+		for num_trial in $((5)) # number of actions in each transaction
 		do
 			for use_power_law in "true" "false" # use power law distribution or unifrom distribution for the popularity of each object
 			do

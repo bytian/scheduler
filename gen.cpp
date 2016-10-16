@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #include <random>
 #include <cstdlib>
 #include <vector>
@@ -39,7 +40,7 @@ vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine genA,expone
 
     }
     int dtime = 1 + poiA(genA);
-    act.push_back(Action(time += dtime, Action::FINISH, true));
+    act.push_back(Action((act.begin() + act.size() - 1)->time += dtime, Action::FINISH, true));
 
     return act;
 }
