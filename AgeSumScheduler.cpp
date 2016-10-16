@@ -81,8 +81,7 @@ const std::set<int> AgeSumScheduler::assign(int oid)
     sort(exclTrans[oid].begin(), exclTrans[oid].end(), myComparater);
     sort(inclTrans[oid].begin(), inclTrans[oid].end(), myComparater);
 
-    if (inclTrans[oid].size() == 0 or (exclTrans[oid].size() > 0 and
-            exclTrans[oid][0]->size * exclTrans[oid][0]->startTimeSum < inclTrans[oid][0]->size * inclTrans[oid][0]->startTimeSum)) {  // assign lock to write
+    if (inclTrans[oid].size() == 0 or (exclTrans[oid].size() > 0 and exclTrans[oid][0]->startTimeSum < inclTrans[oid][0]->startTimeSum)) {  // assign lock to write
         int trans = (*exclTrans[oid].begin())->Tx_id;
         updateO(oid, -(*exclTrans[oid].begin())->size - 1, -(*exclTrans[oid].begin())->startTimeSum - sim->getTrans(trans).getStartTime());
 

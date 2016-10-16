@@ -90,12 +90,12 @@ const std::set<int> ConstantChunkScheduler::assign(int oid) {
             restChunkSize += (*it)->second;
     }
 
-    unsigned int totalWriteSize = 0;
-    for (auto it = exclTrans[oid].begin(); it < exclTrans[oid].end(); it ++)
-        totalWriteSize += (*it)->second;
+    unsigned int writeSize = 0;
+    for (auto it = exclTrans[oid].begin(); it < exclTrans[oid].end() and it < exclTrans[oid].begin()+1; it ++)
+        writeSize += (*it)->second;
 
-    double latencyW = totalWriteSize + 2 * firstChunkSize;
-    double latencyR = f(chunkSize) * totalWriteSize + firstChunkSize;
+    double latencyW = writeSize + 2 * firstChunkSize;
+    double latencyR = (f(chunkSize) + 1) * writeSize + firstChunkSize;
     //cerr << "I am here" << endl;
     if (exclTrans[oid].size() > 0 and (inclTrans[oid].size() == 0 or latencyR >= latencyW)) { //assign the lock to write
 
