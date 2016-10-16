@@ -35,12 +35,12 @@ vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine genA,expone
             act.push_back(Action(time += dtime, obj, lock_type));
             old_obj = obj;
         } else {
-            (act.begin() + act.size() - 1)->time += dtime;
+            time = ((act.begin() + act.size() - 1)->time += dtime);
         }
 
     }
     int dtime = 1 + poiA(genA);
-    act.push_back(Action((act.begin() + act.size() - 1)->time += dtime, Action::FINISH, true));
+    act.push_back(Action(time + dtime, Action::FINISH, true));
 
     return act;
 }
