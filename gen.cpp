@@ -11,7 +11,7 @@ using namespace std;
 
 //const double FINPROB = 0.35;
 
-vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine genA,exponential_distribution<double> poiA, int NUM_TRAIL, int LOCK_TYPE_PROB, int USE_POWER_LAW)
+vector<Action> genTrans(RandomSeqGen* randGen, default_random_engine& genA,exponential_distribution<double> poiA, int NUM_TRAIL, int LOCK_TYPE_PROB, int USE_POWER_LAW)
 {
     int time = 0;
     vector<Action> act;
