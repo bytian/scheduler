@@ -23,13 +23,14 @@ for file in $prefix*; do
 		echo "" >> result
 	done
 
-	printf "testcase $file dtsize " >> result
-	./dtsize < "${file}" >> result
-	echo "" >> result
+    echo "$file"
+    printf "testcase $file dtsize " >> result
+    ./dtsize < "${file}" >> result
+    echo "" >> result
 
-	printf "testcase $file dp " >> result
-	./dp < "${file}" >> result
-	echo "" >> result
+    printf "testcase $file dp " >> result
+    ./dp < "${file}" >> result
+    echo "" >> result
 
 	printf "testcase $file constchunk " >> result
 	./constchunk < "${file}" >> result
