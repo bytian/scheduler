@@ -1,7 +1,7 @@
 import sys, os
 import matplotlib.pyplot as plt
 
-version_num = 8.0
+version_num = 4.0
 random_repeat = 10.0
 
 LatencyCollector = {}
@@ -18,8 +18,15 @@ with open('result') as file:
 			words = line.split(' ')
 			testcase = words[1].split('/')[1]
 			scheduler = words[2]
+
+			# use only the first 4 verstions for each testcase if there are more than 4
+			if (float(testcase.split('_')[1]) > 4) 
+				continue
+
 			latency = float(words[3])
 			waittime = float(words[4])
+
+			# gather the data into each testcase/scheduler combo
 			if (scheduler.split('/')[0] == "random"):
 				if ((testcase + "/random") in LatencyCollector):
 					LatencyCollector[testcase + "/random"] += latency

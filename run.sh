@@ -17,6 +17,7 @@ for file in $prefix*; do
 	
 	for n in 1 2 3 4 5 6 7 8 9 10 
 	do
+		sleep 1.1
 		printf "testcase $file random/$n " >> result
 		./random < "${file}" >> result
 		echo "" >> result

@@ -19,7 +19,7 @@ do
 						do
 							for lambda_a in 0.01 # the lambda parameter for the possion distribution of transaction's next action 
 							do
-								for version in 1 2 3 4 5 6 7 8 # generate 10 testcase for each combination of above parameter
+								for version in 1 2 3 4 # generate 10 testcase for each combination of above parameter
 								do
 									if [ "$use_power_law" = "true" ]; then
 										filename="trans_TX${num_trans}O${num_obj}TR${num_trial}LA${lambda_a}LT${lambda_t}LP${lock_type_prob}PL${power_law_param}POWLAW_${version}"
