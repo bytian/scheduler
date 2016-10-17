@@ -22,7 +22,7 @@ class AgeSumScheduler : public Scheduler {
 private:
     struct Comparater { // customized comparater for the priority queue
         bool operator() (Tx_size_age* Ta, Tx_size_age* Tb) {
-            if (Ta->size * Ta->startTimeSum > Tb->size * Tb->startTimeSum)
+            if (Ta->startTimeSum > Tb->startTimeSum)
                 return true;
             else
                 return false;

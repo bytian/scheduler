@@ -103,7 +103,7 @@ const std::set<int> AgeSumScheduler::assign(int oid)
             inclSize += (*itr)->size + 1;
             inclAge += (*itr)->startTimeSum + sim->getTrans(tx).getStartTime();
         }
-        updateO(oid, -inclSize, inclAge);
+        updateO(oid, -inclSize, -inclAge);
 
         for (auto itr = inclTrans[oid].begin(); itr != inclTrans[oid].end(); ++itr) {
             int trans = (*itr)->Tx_id;
