@@ -129,6 +129,13 @@ void Simulator::run()
 
 //        std::cerr << clock << ' ' << cursor << ' ' << to_assign.size() << ' ' << running.size() << ' ' << finish << std::endl;
 
+        if (finish > trans.size())
+        {
+            std::cerr << "More transactions than expected ?!" << std::endl;
+            std::cout << "Assertion Failure: More transactions than expected" << std::endl;
+            assert(false);
+        }
+
         if (finish >= trans.size())
             break;
     }
