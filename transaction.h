@@ -101,5 +101,7 @@ public:
     int getID() { return id; }
 
     int getBlockBy() { return blockBy; }
+
+    std::vector<int> getHolds() { return holds; }
 };
 #endif
