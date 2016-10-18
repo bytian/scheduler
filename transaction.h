@@ -102,6 +102,6 @@ public:
 
     int getBlockBy() { return blockBy; }
 
-    std::vector<int> getHolds() { return holds; }
+    std::vector<int>& getHolds() { return holds; }
 };
 #endif
