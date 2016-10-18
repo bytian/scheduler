@@ -24,7 +24,7 @@ bool Swapping::acquire(int tid, int oid, bool excl)
 {
     int latency = 0;
 
-    int status = sim-getObj(oid).getStatus();
+    int status = sim->getObj(oid).getStatus();
     if (finishTime[tid] == 0)
     {
         updateT(tid, 1, latency);
@@ -86,7 +86,7 @@ bool Swapping::acquire(int tid, int oid, bool excl)
         }
     }
 
-    swap(oid);
+    swapFrom(oid);
 }
 
 void Swapping::release(int tid, int oid)
@@ -99,12 +99,12 @@ void Swapping::release(int tid, int oid)
 
     if (sim->getObj(oid).getStatus() == Object::FREE)
     {
-        if (!exclTrans[oid].empty() || !inclTrans[oid].empty())
+        if (!schedule[oid].empty())
         {
             sim->addToAssign(oid);
         }
     }
-    swap(oid);
+    swapFrom(oid);
 }
 
 const std::set<int> Swapping::assign(int oid)
@@ -131,15 +131,15 @@ const std::set<int> Swapping::assign(int oid)
 
     releaseTime[oid] = 1;
 
-    swap(oid);
+    swapFrom(oid);
 }
 
 int Swapping::getTime() { return sim->getTime(); }
 
-void Swapping::updateO(int oid, long long& latency)
+void Swapping::updateO(int oid, int& latency)
 {
     int maxTime = releaseTime[oid];
-    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner.end(); ++itr)
+    for (auto itr = sim->getObj(oid).getOwner().begin(); itr != sim->getObj(oid).getOwner().end(); ++itr)
     {
         if (finishTime[*itr] > maxTime)
             maxTime = finishTime[*itr];
@@ -150,9 +150,9 @@ void Swapping::updateO(int oid, long long& latency)
         return;
     }
 
-    int delta = maxTime - releaseTime;
+    int delta = maxTime - releaseTime[oid];
     releaseTime[oid] = maxTime;
-    for (auto itr = schedule[oid].begin(); itr != scheduler[oid].end(); ++itr)
+    for (auto itr = schedule[oid].begin(); itr != schedule[oid].end(); ++itr)
     {
         updateT(*itr, delta, latency);
     }
@@ -163,7 +163,7 @@ void Swapping::updateO(int oid, long long& latency)
 
 }
 
-void Swapping::updateT(int tid, int delta, long long& latency)
+void Swapping::updateT(int tid, int delta, int& latency)
 {
     latency += delta;
     finishTime[tid] += delta;
@@ -193,7 +193,7 @@ void Swapping::swapFrom(int oid)
 
 bool Swapping::swapO(int oid)
 {
-    if (schedule[oid].size < 2)
+    if (schedule[oid].size() < 2)
         return false;
 
     bool flag = false;
@@ -224,7 +224,7 @@ bool Swapping::swap(int oid, int x)
     {
         for (int i = 0; i < inclTrans[oid].size(); ++i)
         {
-            update(inclTrans[oid][i], -1, latency);
+            updateT(inclTrans[oid][i], -1, latency);
         }
     }
     else
@@ -256,7 +256,7 @@ bool Swapping::swap(int oid, int x)
     {
         for (int i = 0; i < inclTrans[oid].size(); ++i)
         {
-            update(inclTrans[oid][i], 1, latency);
+            updateT(inclTrans[oid][i], 1, latency);
         }
     }
     else

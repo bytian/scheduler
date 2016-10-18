@@ -48,6 +48,11 @@
 #define SIM_SCHEDULER AgeSumScheduler
 #endif
 
+#ifdef SWAP
+#include "swapping.h"
+#define SIM_SCHEDULER Swapping
+#endif
+
 
 #include <set>
 #include <vector>

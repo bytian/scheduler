@@ -16,8 +16,8 @@ private:
     Simulator* sim;
 
 private:
-    void updateO(int oid, long long& latency);
-    void updateT(int tid, int delta, long long& latency);
+    void updateO(int oid, int& latency);
+    void updateT(int tid, int delta, int& latency);
     void swapFrom(int oid);
     bool swapO(int oid);
     bool swap(int oid, int x);
@@ -30,7 +30,7 @@ public:
     void release(int tid, int oid);
     const std::set<int> assign(int oid);
     int getTime();
-}
+};
 
 
 #endif // SWAPPING_H
