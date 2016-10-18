@@ -26,8 +26,8 @@ void Object::addOwner(const std::set<int>& tid, bool excl)
     {
         std::cerr << "Object #" << id << "is protected by an inclusive lock" << std::endl;
         std::cerr << "Cannot grant an exclusive lock on it." << std::endl;
-        assert(false);
         std::cout << "Assertion failure." << std::endl;
+        assert(false);
     }
     for (auto itr = tid.begin(); itr != tid.end(); ++itr)
     {
