@@ -23,7 +23,7 @@ void RandomScheduler::init() {
 bool RandomScheduler::acquire(int tid, int oid, bool excl)
 {
     int status = sim->getObj(oid).getStatus();
-    if (status == Object::FREE) {
+    if (status == Object::FREE and exclTrans[oid].empty() and inclTrans[oid].empty()) {
         std::set<int> trans;
         trans.insert(tid);
         sim->getObj(oid).addOwner(trans, excl);
