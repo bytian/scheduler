@@ -32,7 +32,7 @@ bool FIFO::acquire(int tid, int oid, bool excl)
 //    std::cerr << std::endl;
     
 //    std::cerr << "status" << status << std::endl;
-    if (status == Object::FREE)
+    if (status == Object::FREE and exclTrans[oid].empty() and inclTrans[oid].empty())
     {
 //        std::cerr << "G1" << std::endl;
 //        std::cerr << "sizes: " << exclTrans.size() << ' ' << inclTrans.size() << std::endl;

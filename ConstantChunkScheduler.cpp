@@ -78,17 +78,15 @@ const std::set<int> ConstantChunkScheduler::assign(int oid) {
     std::sort(inclTrans[oid].begin(), inclTrans[oid].end(), myComparater);
 
     unsigned int firstChunkSize = 0;
-    unsigned int restChunkSize = 0;
+//    unsigned int restChunkSize = 0;
 
     for (auto it = inclTrans[oid].begin(); it < inclTrans[oid].begin() + chunkSize and it < inclTrans[oid].end(); it ++)
         firstChunkSize += (*it)->second;
 
-    if (chunkSize >= inclTrans[oid].size())
-        restChunkSize = 0;
-    else {
-        for (auto it = inclTrans[oid].begin()+chunkSize; it < inclTrans[oid].end(); it ++)
-            restChunkSize += (*it)->second;
-    }
+//    if (chunkSize < inclTrans[oid].size()) {
+//        for (auto it = inclTrans[oid].begin()+chunkSize; it < inclTrans[oid].end(); it ++)
+//            restChunkSize += (*it)->second;
+//    }
 
     unsigned int writeSize = 0;
     for (auto it = exclTrans[oid].begin(); it < exclTrans[oid].end() and it < exclTrans[oid].begin()+1; it ++)
