@@ -39,7 +39,7 @@ bool AgeSumScheduler::acquire(int tid, int oid, bool excl)
 {
     int status = sim->getObj(oid).getStatus();
 
-    if (status == Object::FREE) {
+    if (status == Object::FREE and exclTrans[oid].empty() and inclTrans[oid].empty()) {
 
         updateT(tid, size_age_O[oid].size, size_age_O[oid].startTimeSum);
 
