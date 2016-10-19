@@ -29,7 +29,7 @@ bool DP::acquire(int tid, int oid, bool excl)
 {
     int status = sim->getObj(oid).getStatus();
 
-    if (status == Object::FREE)
+    if (status == Object::FREE and exclTrans[oid].empty() and inclTrans[oid].empty())
     {
         updateT(tid, sizeO[oid]);
         std::set<int> trans;
