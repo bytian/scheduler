@@ -91,7 +91,7 @@ const std::set<int> FIFO::assign(int oid)
     }
     else
     {
-        assigned = inclTrans[oid];
+        assigned = inclTrans[oid]; // I'm not sure what this is. ??????
         for (auto itr = assigned.begin(); itr != assigned.end(); ++itr)
         {
             sim->getTrans(*itr).grantLock();

@@ -58,6 +58,11 @@
 #define SIM_SCHEDULER LargestDependency
 #endif
 
+#ifdef FIFORE
+#include "fifo_re.h"
+#define SIM_SCHEDULER FIFO_RE
+#endif
+
 
 #include <set>
 #include <vector>

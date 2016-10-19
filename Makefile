@@ -2,7 +2,7 @@
 
 CXX=g++ -std=c++11
 
-all : gen oldest fifo random dtsize dp nosplit constchunk agesum swap ldep
+all : gen oldest fifo random dtsize dp nosplit constchunk agesum swap ldep fifo_re
 
 gen: gen.cpp
 	$(CXX) -o $@ $^ -O3
@@ -37,6 +37,9 @@ swap: scheduler.cpp swapping.cpp transaction.cpp simulator.cpp run.cpp object.cp
 ldep: scheduler.cpp largestDependency.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
 	$(CXX) -o $@ $^ -DLDEP -O3
 
+fifo_re: scheduler.cpp fifo_re.cpp transaction.cpp simulator.cpp run.cpp object.cpp 
+	$(CXX) -o $@ $^ -DFIFORE -O3
+
 clean:
-	rm -f gen oldest fifo random dtsize dp nosplit constchunk agesum
+	rm -f gen oldest fifo random dtsize dp nosplit constchunk agesum swap ldep fifo_re
 
