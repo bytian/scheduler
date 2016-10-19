@@ -53,6 +53,11 @@
 #define SIM_SCHEDULER Swapping
 #endif
 
+#ifdef LDEP
+#include "largestDependency.h"
+#define SIM_SCHEDULER LargestDependency
+#endif
+
 
 #include <set>
 #include <vector>
